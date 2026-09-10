@@ -25,7 +25,7 @@ Website ini dibuat menggunakan kombinasi HTML, CSS, JavaScript dan Bootstrap 5. 
 - **Foto Profil**: Menampilkan foto profil bulat dengan ukuran 250x250.
 
 #### Link Website
-> Website `https://diansiswandi.github.io/portfolio/`
+> Website `https://diansiswandi.github.io/`
 
 #### Terakhir Update
 - `Tanggal 22-September-2025 Pukul 10:30 Wib`
