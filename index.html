@@ -417,38 +417,18 @@
     opacity: 1;
     transform: scale(1.2);
   }
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .book-container {
-      height: 95vh;
-    }
-    .book-cover h1 {
-      font-size: 2.5rem;
-    }
-    .profile-photo {
-      width: 250px;
-      height: 250px;
-    }
-    .carousel-image {
-      height: 250px;
-    }
-    .nav-buttons {
-      display: none;
-    }
-    .social-links {
-      display: none;
-    }
-    .page-indicator {
-      display: none;
-    }
-    .keyboard-hint {
-      display: none;
-    }
-    .click-zone {
-      display: none;
-    }
-  }
-  @media (max-width: 576px) {
+
+  /* ==========================================================================
+     RESPONSIVE DESIGN - BREAKPOINT BARU
+     --------------------------------------------------------------------------
+     Skema:
+     - HP Layar Kecil    (< 576px)        : Nav hilang, Social Desktop hilang, Floating muncul
+     - HP Lebar/Tablet   (576 - 991.98px) : Nav MUNCUL, Social Desktop hilang, Floating muncul
+     - Desktop           (>= 992px)       : Nav MUNCUL, Social Desktop MUNCUL, Floating hilang
+     ========================================================================== */
+
+  /* --- HP LAYAR KECIL (< 576px) --- */
+  @media (max-width: 575.98px) {
     body {
       padding: 10px;
     }
@@ -468,14 +448,101 @@
     .carousel-image {
       height: 200px;
     }
+    /* Navigasi hilang di HP kecil - pengguna mengandalkan swipe */
+    .nav-buttons {
+      display: none !important;
+    }
+    .social-links {
+      display: none !important;
+    }
+    .page-indicator {
+      display: none !important;
+    }
+    .keyboard-hint {
+      display: none !important;
+    }
+    .click-zone {
+      display: none !important;
+    }
   }
-  /* Floating Social Media - Default hidden */
+
+  /* --- HP LAYAR LEBAR / TABLET KECIL (576px - 991.98px) --- */
+  @media (min-width: 576px) and (max-width: 991.98px) {
+    .book-container {
+      height: 92vh;
+    }
+    .book-cover h1 {
+      font-size: 2.8rem;
+    }
+    .profile-photo {
+      width: 260px;
+      height: 260px;
+    }
+    .carousel-image {
+      height: 260px;
+    }
+    /* Tombol navigasi MUNCUL di tablet - ada ruang layar cukup */
+    .nav-buttons {
+      display: flex !important;
+      bottom: 15px;
+    }
+    .nav-btn {
+      padding: 10px 22px;
+      font-size: 0.9rem;
+    }
+    /* Social links desktop tetap hilang, ganti dengan floating button */
+    .social-links {
+      display: none !important;
+    }
+    /* Page indicator muncul dalam bentuk yang lebih ringkas */
+    .page-indicator {
+      display: flex !important;
+      bottom: 22px;
+      left: 20px;
+      font-size: 0.9rem;
+    }
+    .keyboard-hint {
+      display: none !important;
+    }
+    .click-zone {
+      display: none !important;
+    }
+  }
+
+  /* --- TABLET BESAR / DESKTOP (>= 992px) --- */
+  @media (min-width: 992px) {
+    /* Semua elemen UI muncul penuh */
+    .nav-buttons {
+      display: flex !important;
+    }
+    .social-links {
+      display: flex !important;
+    }
+    .page-indicator {
+      display: flex !important;
+    }
+    .keyboard-hint {
+      display: flex !important;
+    }
+    .click-zone {
+      display: flex !important;
+    }
+  }
+
+  /* ==========================================================================
+     FLOATING SOCIAL MEDIA - Skema Baru
+     --------------------------------------------------------------------------
+     - Muncul di HP kecil (< 576px) DAN HP lebar/tablet (576 - 991.98px)
+     - Hilang di Desktop (>= 992px) - karena sudah ada social-links biasa
+     ========================================================================== */
+
+  /* Default: hidden */
   #socialToggleBtn, #socialFloating {
     display: none;
   }
-  
-  /* Floating Social Media - Show only on mobile */
-  @media (max-width: 768px) {
+
+  /* Muncul di HP kecil DAN tablet (mobile + phablet) */
+  @media (max-width: 991.98px) {
     #socialToggleBtn, #socialFloating {
       display: flex;
     }
@@ -535,6 +602,14 @@
       transform: scale(1.1);
     }
   }
+
+  /* Pastikan floating social hilang di desktop */
+  @media (min-width: 992px) {
+    #socialToggleBtn, #socialFloating {
+      display: none !important;
+    }
+  }
+
   /* Closing book animation */
   .book-content.closing-page {
     transform-origin: left center !important;
@@ -793,7 +868,7 @@
     <a href="https://fb.me/dian.siswandi" class="social-icon" title="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
   </div>
 </div>
-<!-- Floating Social Toggle Button for Mobile -->
+<!-- Floating Social Toggle Button for Mobile & Tablet -->
 <div id="socialToggleBtn" aria-label="Tombol sosial media" role="button" tabindex="0" title="Sosial Media">
   <i class="fas fa-share-alt"></i>
 </div>
@@ -839,6 +914,10 @@
     let isAnimatingClose = false;
     let isBookOpen = false;
     
+    // Breakpoint thresholds - harus SINKRON dengan CSS
+    const BREAKPOINT_SMALL = 576;    // < 576px = HP kecil
+    const BREAKPOINT_TABLET = 992;   // >= 992px = Desktop
+    
     // Create progress dots
     function createProgressDots() {
       progressDots.innerHTML = '';
@@ -857,9 +936,21 @@
     }
     createProgressDots();
     
-    // Function to update social floating visibility
-    function updateSocialFloatingVisibility() {
-      if (window.innerWidth <= 768) {
+    /**
+     * Update visibility of UI elements based on screen width
+     * Skema:
+     * - < 576px  (HP kecil)   : Nav hilang, Social Desktop hilang, Floating muncul
+     * - 576-991px (HP lebar/Tablet): Nav MUNCUL, Social Desktop hilang, Floating muncul
+     * - >= 992px (Desktop)    : Nav MUNCUL, Social Desktop MUNCUL, Floating hilang
+     */
+    function updateUIVisibility() {
+      const width = window.innerWidth;
+      const isSmall = width < BREAKPOINT_SMALL;
+      const isTablet = width >= BREAKPOINT_SMALL && width < BREAKPOINT_TABLET;
+      const isDesktop = width >= BREAKPOINT_TABLET;
+      
+      // Floating social media button
+      if (isSmall || isTablet) {
         socialToggleBtn.style.display = 'flex';
         socialFloating.style.display = 'flex';
         socialFloating.classList.remove('show');
@@ -868,34 +959,66 @@
         socialFloating.style.display = 'none';
         socialFloating.classList.remove('show');
       }
+      
+      // Jika buku sedang terbuka, update elemen UI lainnya
+      if (isBookOpen) {
+        // Nav buttons: muncul di tablet dan desktop
+        if (isSmall) {
+          navButtons.style.display = 'none';
+        } else {
+          navButtons.style.display = 'flex';
+        }
+        
+        // Social links desktop: hanya muncul di desktop
+        if (isDesktop) {
+          socialLinksDesktop.style.display = 'flex';
+        } else {
+          socialLinksDesktop.style.display = 'none';
+        }
+        
+        // Page indicator: muncul di tablet dan desktop
+        if (isSmall) {
+          pageIndicator.style.display = 'none';
+        } else {
+          pageIndicator.style.display = 'flex';
+        }
+        
+        // Keyboard hint & click zones: hanya desktop
+        if (isDesktop) {
+          keyboardHint.style.display = 'flex';
+          clickZoneLeft.style.display = 'flex';
+          clickZoneRight.style.display = 'flex';
+        } else {
+          keyboardHint.style.display = 'none';
+          clickZoneLeft.style.display = 'none';
+          clickZoneRight.style.display = 'none';
+        }
+      }
     }
-    // Initialize visibility
-    updateSocialFloatingVisibility();
+    
+    // Initialize visibility on load
+    updateUIVisibility();
+    
     // Toggle social floating
     socialToggleBtn.addEventListener('click', function() {
       socialFloating.classList.toggle('show');
     });
     
-    // Show UI elements when book is open
+    // Show UI elements when book is open - according to screen size
     function showBookUI() {
-      navButtons.style.display = 'flex';
-      socialLinksDesktop.style.display = 'flex';
-      pageIndicator.style.display = 'flex';
-      keyboardHint.style.display = 'flex';
-      clickZoneLeft.style.display = 'flex';
-      clickZoneRight.style.display = 'flex';
       isBookOpen = true;
+      updateUIVisibility();
     }
     
-    // Hide UI elements when book is closed
+    // Hide all UI elements when book is closed
     function hideBookUI() {
+      isBookOpen = false;
       navButtons.style.display = 'none';
       socialLinksDesktop.style.display = 'none';
       pageIndicator.style.display = 'none';
       keyboardHint.style.display = 'none';
       clickZoneLeft.style.display = 'none';
       clickZoneRight.style.display = 'none';
-      isBookOpen = false;
     }
     
     // Open book - cover flips like a real book cover
@@ -1050,12 +1173,14 @@
       }
       
       // Update click zone right hint
-      if (currentPage === pages.length - 1) {
-        clickZoneRight.querySelector('i').className = 'fas fa-book';
-        clickZoneRight.title = 'Tutup buku';
-      } else {
-        clickZoneRight.querySelector('i').className = 'fas fa-chevron-right';
-        clickZoneRight.title = 'Halaman berikutnya';
+      if (clickZoneRight.style.display !== 'none') {
+        if (currentPage === pages.length - 1) {
+          clickZoneRight.querySelector('i').className = 'fas fa-book';
+          clickZoneRight.title = 'Tutup buku';
+        } else {
+          clickZoneRight.querySelector('i').className = 'fas fa-chevron-right';
+          clickZoneRight.title = 'Halaman berikutnya';
+        }
       }
     }
     
@@ -1156,8 +1281,8 @@
       }
     });
     
-    // Resize handler
-    window.addEventListener('resize', updateSocialFloatingVisibility);
+    // Resize handler - update UI visibility when window resizes
+    window.addEventListener('resize', updateUIVisibility);
     
     // Touch swipe for mobile
     let touchStartX = 0;
