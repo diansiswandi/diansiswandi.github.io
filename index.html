@@ -222,9 +222,12 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
+    display: none;
     gap: 15px;
     z-index: 100;
+  }
+  .nav-buttons.ui-visible {
+    display: flex;
   }
   .nav-btn {
     background: var(--secondary-color);
@@ -255,9 +258,12 @@
     position: absolute;
     bottom: 20px;
     right: 30px;
-    display: flex;
+    display: none;
     gap: 15px;
     z-index: 100;
+  }
+  .social-links.ui-visible {
+    display: flex;
   }
   .social-icon {
     width: 40px;
@@ -329,9 +335,12 @@
     color: var(--primary-color);
     opacity: 0.7;
     z-index: 100;
-    display: flex;
+    display: none;
     align-items: center;
     gap: 10px;
+  }
+  .page-indicator.ui-visible {
+    display: flex;
   }
   /* Progress dots */
   .progress-dots {
@@ -364,10 +373,13 @@
     color: var(--primary-color);
     opacity: 0.5;
     z-index: 100;
-    display: flex;
+    display: none;
     align-items: center;
     gap: 8px;
     transition: opacity 0.3s ease;
+  }
+  .keyboard-hint.ui-visible {
+    display: flex;
   }
   .keyboard-hint:hover {
     opacity: 0.9;
@@ -390,9 +402,12 @@
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.3s ease;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
+  }
+  .click-zone.ui-visible {
+    display: flex;
   }
   .click-zone:hover {
     opacity: 1;
@@ -419,15 +434,27 @@
   }
 
   /* ==========================================================================
-     RESPONSIVE DESIGN - BREAKPOINT BARU
+     RESPONSIVE DESIGN - Class-based visibility (NO !important conflict)
      --------------------------------------------------------------------------
-     Skema:
-     - HP Layar Kecil    (< 576px)        : Nav hilang, Social Desktop hilang, Floating muncul
-     - HP Lebar/Tablet   (576 - 991.98px) : Nav MUNCUL, Social Desktop hilang, Floating muncul
-     - Desktop           (>= 992px)       : Nav MUNCUL, Social Desktop MUNCUL, Floating hilang
+     Kita menggunakan class CSS untuk mengontrol visibilitas, bukan inline style.
+     JavaScript hanya menambah/menghapus class "ui-visible" + "book-open".
+     CSS media query yang menentukan apakah class tersebut efektif.
      ========================================================================== */
 
-  /* --- HP LAYAR KECIL (< 576px) --- */
+  /* --- DEFAULT: Semua UI tersembunyi kecuali buku terbuka --- */
+  .book-open .nav-buttons.ui-visible,
+  .book-open .page-indicator.ui-visible,
+  .book-open .keyboard-hint.ui-visible,
+  .book-open .click-zone.ui-visible,
+  .book-open .social-links.ui-visible {
+    display: flex !important;
+  }
+
+  /* --- HP LAYAR KECIL (< 576px) ---
+     Navigasi: HILANG (gunakan swipe)
+     Social Links Desktop: HILANG
+     Floating Social: MUNCUL
+  */
   @media (max-width: 575.98px) {
     body {
       padding: 10px;
@@ -448,25 +475,29 @@
     .carousel-image {
       height: 200px;
     }
-    /* Navigasi hilang di HP kecil - pengguna mengandalkan swipe */
-    .nav-buttons {
+    /* Paksa UI navigasi untuk TIDAK muncul di HP kecil */
+    .book-open .nav-buttons.ui-visible {
       display: none !important;
     }
-    .social-links {
+    .book-open .social-links.ui-visible {
       display: none !important;
     }
-    .page-indicator {
+    .book-open .page-indicator.ui-visible {
       display: none !important;
     }
-    .keyboard-hint {
+    .book-open .keyboard-hint.ui-visible {
       display: none !important;
     }
-    .click-zone {
+    .book-open .click-zone.ui-visible {
       display: none !important;
     }
   }
 
-  /* --- HP LAYAR LEBAR / TABLET KECIL (576px - 991.98px) --- */
+  /* --- HP LAYAR LEBAR / TABLET KECIL (576px - 991.98px) ---
+     Navigasi: MUNCUL
+     Social Links Desktop: HILANG
+     Floating Social: MUNCUL
+  */
   @media (min-width: 576px) and (max-width: 991.98px) {
     .book-container {
       height: 92vh;
@@ -481,67 +512,62 @@
     .carousel-image {
       height: 260px;
     }
-    /* Tombol navigasi MUNCUL di tablet - ada ruang layar cukup */
-    .nav-buttons {
+    /* Nav muncul, tapi social links desktop tetap hilang */
+    .book-open .nav-buttons.ui-visible {
       display: flex !important;
       bottom: 15px;
     }
-    .nav-btn {
+    .book-open .nav-buttons.ui-visible .nav-btn {
       padding: 10px 22px;
       font-size: 0.9rem;
     }
-    /* Social links desktop tetap hilang, ganti dengan floating button */
-    .social-links {
+    .book-open .social-links.ui-visible {
       display: none !important;
     }
-    /* Page indicator muncul dalam bentuk yang lebih ringkas */
-    .page-indicator {
+    .book-open .page-indicator.ui-visible {
       display: flex !important;
       bottom: 22px;
       left: 20px;
       font-size: 0.9rem;
     }
-    .keyboard-hint {
+    .book-open .keyboard-hint.ui-visible {
       display: none !important;
     }
-    .click-zone {
+    .book-open .click-zone.ui-visible {
       display: none !important;
     }
   }
 
-  /* --- TABLET BESAR / DESKTOP (>= 992px) --- */
+  /* --- TABLET BESAR / DESKTOP (>= 992px) ---
+     SEMUA UI muncul penuh
+     Floating Social: HILANG
+  */
   @media (min-width: 992px) {
-    /* Semua elemen UI muncul penuh */
-    .nav-buttons {
+    .book-open .nav-buttons.ui-visible {
       display: flex !important;
     }
-    .social-links {
+    .book-open .social-links.ui-visible {
       display: flex !important;
     }
-    .page-indicator {
+    .book-open .page-indicator.ui-visible {
       display: flex !important;
     }
-    .keyboard-hint {
+    .book-open .keyboard-hint.ui-visible {
       display: flex !important;
     }
-    .click-zone {
+    .book-open .click-zone.ui-visible {
       display: flex !important;
     }
   }
 
   /* ==========================================================================
-     FLOATING SOCIAL MEDIA - Skema Baru
-     --------------------------------------------------------------------------
-     - Muncul di HP kecil (< 576px) DAN HP lebar/tablet (576 - 991.98px)
-     - Hilang di Desktop (>= 992px) - karena sudah ada social-links biasa
+     FLOATING SOCIAL MEDIA
+     - Muncul: < 992px (HP kecil + HP lebar + Tablet)
+     - Hilang: >= 992px (Desktop)
      ========================================================================== */
-
-  /* Default: hidden */
   #socialToggleBtn, #socialFloating {
     display: none;
   }
-
-  /* Muncul di HP kecil DAN tablet (mobile + phablet) */
   @media (max-width: 991.98px) {
     #socialToggleBtn, #socialFloating {
       display: flex;
@@ -602,8 +628,6 @@
       transform: scale(1.1);
     }
   }
-
-  /* Pastikan floating social hilang di desktop */
   @media (min-width: 992px) {
     #socialToggleBtn, #socialFloating {
       display: none !important;
@@ -650,15 +674,15 @@
   </div>
   
   <!-- Keyboard hint -->
-  <div class="keyboard-hint" id="keyboardHint" style="display: none;">
+  <div class="keyboard-hint" id="keyboardHint">
     <kbd>←</kbd> <kbd>→</kbd> untuk navigasi
   </div>
   
   <!-- Click zones -->
-  <div class="click-zone left" id="clickZoneLeft" style="display: none;" title="Halaman sebelumnya">
+  <div class="click-zone left" id="clickZoneLeft" title="Halaman sebelumnya">
     <i class="fas fa-chevron-left"></i>
   </div>
-  <div class="click-zone right" id="clickZoneRight" style="display: none;" title="Halaman berikutnya">
+  <div class="click-zone right" id="clickZoneRight" title="Halaman berikutnya">
     <i class="fas fa-chevron-right"></i>
   </div>
   
@@ -770,7 +794,11 @@
           </div>
           <div class="mt-2">
             <h6>Operator Keuangan</h6>
-            <p><small class="text-muted">7 Tahun</small></p>
+            <p><small class="text-muted">5 Tahun</small></p>
+          </div>
+          <div class="mt-2">
+            <h6>Operator Perencanaan Keuangan</h6>
+            <p><small class="text-muted">3 Tahun - Sekarang</small></p>
           </div>
         </div>
       </div>
@@ -845,13 +873,13 @@
   </div>
   
   <!-- Page Number Indicator with progress dots -->
-  <div class="page-indicator" id="pageIndicator" style="display: none;">
+  <div class="page-indicator" id="pageIndicator">
     <span id="pageNumberText">Halaman 1 / 8</span>
     <div class="progress-dots" id="progressDots"></div>
   </div>
   
   <!-- Navigation Buttons -->
-  <div class="nav-buttons" id="navButtons" style="display: none;">
+  <div class="nav-buttons" id="navButtons">
     <button class="nav-btn" id="prevBtn" disabled aria-label="Halaman sebelumnya">
       <i class="fas fa-chevron-left"></i> Sebelumnya
     </button>
@@ -861,7 +889,7 @@
   </div>
   
   <!-- Social Media Links Desktop -->
-  <div class="social-links" id="socialLinksDesktop" style="display: none;">
+  <div class="social-links" id="socialLinksDesktop">
     <a href="https://www.instagram.com/diansiswandi" class="social-icon" title="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
     <a href="https://x.com/dian_siswandi" class="social-icon" title="Twitter" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>
     <a href="https://id.linkedin.com/in/dian-siswandi-48846388" class="social-icon" title="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>
@@ -892,12 +920,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    'use strict';
+    
+    const bookContainer = document.getElementById('bookContainer');
     const bookCover = document.getElementById('bookCover');
     const pages = document.querySelectorAll('.book-content');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const profilePhoto = document.getElementById('profilePhoto');
-    const bookContainer = document.getElementById('bookContainer');
     const socialToggleBtn = document.getElementById('socialToggleBtn');
     const socialFloating = document.getElementById('socialFloating');
     const pageIndicator = document.getElementById('pageIndicator');
@@ -909,16 +939,52 @@
     const clickZoneLeft = document.getElementById('clickZoneLeft');
     const clickZoneRight = document.getElementById('clickZoneRight');
     
+    // State variables
     let currentPage = 0;
     let isAnimating = false;
     let isAnimatingClose = false;
     let isBookOpen = false;
     
-    // Breakpoint thresholds - harus SINKRON dengan CSS
-    const BREAKPOINT_SMALL = 576;    // < 576px = HP kecil
-    const BREAKPOINT_TABLET = 992;   // >= 992px = Desktop
+    // Breakpoint thresholds - SINKRON dengan CSS
+    const BREAKPOINT_SMALL = 576;
+    const BREAKPOINT_TABLET = 992;
     
+    // ============================================================
+    // BUG FIX #1: Sistem visibilitas berbasis CLASS, bukan inline style
+    // CSS media query yang mengatur apakah class "ui-visible" + "book-open"
+    // benar-benar menampilkan elemen. JavaScript hanya menambah/menghapus class.
+    // ============================================================
+    const uiElements = {
+      nav: navButtons,
+      social: socialLinksDesktop,
+      indicator: pageIndicator,
+      keyboard: keyboardHint,
+      clickLeft: clickZoneLeft,
+      clickRight: clickZoneRight
+    };
+    
+    function showUIElements() {
+      Object.values(uiElements).forEach(el => el.classList.add('ui-visible'));
+    }
+    
+    function hideUIElements() {
+      Object.values(uiElements).forEach(el => el.classList.remove('ui-visible'));
+    }
+    
+    function setBookOpenState(isOpen) {
+      isBookOpen = isOpen;
+      if (isOpen) {
+        bookContainer.classList.add('book-open');
+        showUIElements();
+      } else {
+        bookContainer.classList.remove('book-open');
+        hideUIElements();
+      }
+    }
+    
+    // ============================================================
     // Create progress dots
+    // ============================================================
     function createProgressDots() {
       progressDots.innerHTML = '';
       pages.forEach((_, index) => {
@@ -926,118 +992,72 @@
         dot.className = 'progress-dot' + (index === 0 ? ' active' : '');
         dot.title = `Halaman ${index + 1}`;
         dot.addEventListener('click', () => {
-          if (!isAnimating && !isAnimatingClose && isBookOpen) {
-            const direction = index > currentPage ? 'next' : 'prev';
-            showPage(index, direction);
-          }
+          if (!canInteract()) return;
+          const direction = index > currentPage ? 'next' : 'prev';
+          showPage(index, direction);
         });
         progressDots.appendChild(dot);
       });
     }
     createProgressDots();
     
-    /**
-     * Update visibility of UI elements based on screen width
-     * Skema:
-     * - < 576px  (HP kecil)   : Nav hilang, Social Desktop hilang, Floating muncul
-     * - 576-991px (HP lebar/Tablet): Nav MUNCUL, Social Desktop hilang, Floating muncul
-     * - >= 992px (Desktop)    : Nav MUNCUL, Social Desktop MUNCUL, Floating hilang
-     */
-    function updateUIVisibility() {
-      const width = window.innerWidth;
-      const isSmall = width < BREAKPOINT_SMALL;
-      const isTablet = width >= BREAKPOINT_SMALL && width < BREAKPOINT_TABLET;
-      const isDesktop = width >= BREAKPOINT_TABLET;
-      
-      // Floating social media button
-      if (isSmall || isTablet) {
-        socialToggleBtn.style.display = 'flex';
-        socialFloating.style.display = 'flex';
-        socialFloating.classList.remove('show');
-      } else {
-        socialToggleBtn.style.display = 'none';
-        socialFloating.style.display = 'none';
-        socialFloating.classList.remove('show');
-      }
-      
-      // Jika buku sedang terbuka, update elemen UI lainnya
-      if (isBookOpen) {
-        // Nav buttons: muncul di tablet dan desktop
-        if (isSmall) {
-          navButtons.style.display = 'none';
-        } else {
-          navButtons.style.display = 'flex';
-        }
-        
-        // Social links desktop: hanya muncul di desktop
-        if (isDesktop) {
-          socialLinksDesktop.style.display = 'flex';
-        } else {
-          socialLinksDesktop.style.display = 'none';
-        }
-        
-        // Page indicator: muncul di tablet dan desktop
-        if (isSmall) {
-          pageIndicator.style.display = 'none';
-        } else {
-          pageIndicator.style.display = 'flex';
-        }
-        
-        // Keyboard hint & click zones: hanya desktop
-        if (isDesktop) {
-          keyboardHint.style.display = 'flex';
-          clickZoneLeft.style.display = 'flex';
-          clickZoneRight.style.display = 'flex';
-        } else {
-          keyboardHint.style.display = 'none';
-          clickZoneLeft.style.display = 'none';
-          clickZoneRight.style.display = 'none';
-        }
-      }
+    // ============================================================
+    // Helper: Cek apakah pengguna boleh berinteraksi
+    // ============================================================
+    function canInteract() {
+      return !isAnimating && !isAnimatingClose && isBookOpen;
     }
     
-    // Initialize visibility on load
-    updateUIVisibility();
-    
-    // Toggle social floating
+    // ============================================================
+    // Toggle social floating panel
+    // ============================================================
     socialToggleBtn.addEventListener('click', function() {
       socialFloating.classList.toggle('show');
+      socialFloating.setAttribute('aria-hidden', 
+        socialFloating.classList.contains('show') ? 'false' : 'true');
     });
     
-    // Show UI elements when book is open - according to screen size
-    function showBookUI() {
-      isBookOpen = true;
-      updateUIVisibility();
-    }
+    // Tutup floating social ketika klik di luar
+    document.addEventListener('click', function(e) {
+      if (!socialToggleBtn.contains(e.target) && !socialFloating.contains(e.target)) {
+        socialFloating.classList.remove('show');
+        socialFloating.setAttribute('aria-hidden', 'true');
+      }
+    });
     
-    // Hide all UI elements when book is closed
-    function hideBookUI() {
-      isBookOpen = false;
-      navButtons.style.display = 'none';
-      socialLinksDesktop.style.display = 'none';
-      pageIndicator.style.display = 'none';
-      keyboardHint.style.display = 'none';
-      clickZoneLeft.style.display = 'none';
-      clickZoneRight.style.display = 'none';
-    }
-    
-    // Open book - cover flips like a real book cover
+    // ============================================================
+    // BUG FIX #2: Buka buku - dengan guard yang lebih ketat
+    // ============================================================
     bookCover.addEventListener('click', function() {
-      if (isAnimatingClose || isBookOpen) return;
+      if (isAnimating || isAnimatingClose || isBookOpen) return;
+      
       bookCover.classList.add('open');
+      bookCover.setAttribute('aria-hidden', 'true');
+      
       setTimeout(() => {
-        showBookUI();
+        setBookOpenState(true);
         showPage(0);
       }, 700);
     });
     
+    // Dukungan keyboard untuk membuka buku dari cover
+    bookCover.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        bookCover.click();
+      }
+    });
+    
+    // ============================================================
     // Click zone navigation
+    // ============================================================
     clickZoneLeft.addEventListener('click', function() {
-      if (isAnimating || isAnimatingClose) return;
+      if (!canInteract()) return;
       if (currentPage > 0) showPage(currentPage - 1, 'prev');
     });
+    
     clickZoneRight.addEventListener('click', function() {
-      if (isAnimating || isAnimatingClose) return;
+      if (!canInteract()) return;
       if (currentPage < pages.length - 1) {
         showPage(currentPage + 1, 'next');
       } else {
@@ -1045,33 +1065,65 @@
       }
     });
     
+    // ============================================================
     // Profile photo modal
+    // ============================================================
     profilePhoto.addEventListener('click', function() {
       new bootstrap.Modal(document.getElementById('photoModal')).show();
     });
     
-    // Update page indicator
+    // ============================================================
+    // Update page indicator text & dots
+    // ============================================================
     function updatePageIndicator(pageIndex) {
       if (pageNumberText) {
         pageNumberText.textContent = `Halaman ${pageIndex + 1} / ${pages.length}`;
       }
-      // Update dots
       const dots = progressDots.querySelectorAll('.progress-dot');
       dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === pageIndex);
       });
     }
     
-    // Navigation functions with smooth page flip animation
+    // ============================================================
+    // BUG FIX #3 (KRITIS): showPage - aman dari currentPage = -1
+    // ============================================================
     function showPage(pageIndex, direction = 'next') {
       if (isAnimating) return;
       isAnimating = true;
       
-      const currentPageEl = pages[currentPage];
+      // FIX: Jika currentPage tidak valid (misal -1 setelah closeBook),
+      // langsung tampilkan halaman target tanpa animasi transisi
+      const currentPageValid = currentPage >= 0 && currentPage < pages.length;
+      const currentPageEl = currentPageValid ? pages[currentPage] : null;
       const nextPageEl = pages[pageIndex];
       
-      // If going to first page from cover (no active page yet)
-      if (!currentPageEl.classList.contains('active') && pageIndex === 0) {
+      // Validasi index halaman target
+      if (!nextPageEl) {
+        console.error('showPage: Invalid page index:', pageIndex);
+        isAnimating = false;
+        return;
+      }
+      
+      // Kasus: Tidak ada halaman aktif (buka pertama kali atau setelah closeBook)
+      if ((!currentPageValid || !currentPageEl.classList.contains('active')) && pageIndex === 0) {
+        nextPageEl.style.transition = 'none';
+        nextPageEl.style.transform = 'rotateY(0deg)';
+        nextPageEl.style.opacity = '1';
+        nextPageEl.style.visibility = 'visible';
+        nextPageEl.classList.add('active');
+        
+        // Reset currentPage ke nilai valid
+        currentPage = pageIndex;
+        updateNavButtons();
+        updatePageIndicator(pageIndex);
+        isAnimating = false;
+        return;
+      }
+      
+      // Jika currentPage tidak valid tapi target bukan halaman 0, 
+      // reset ke kondisi aman terlebih dahulu
+      if (!currentPageValid) {
         nextPageEl.style.transition = 'none';
         nextPageEl.style.transform = 'rotateY(0deg)';
         nextPageEl.style.opacity = '1';
@@ -1084,62 +1136,60 @@
         return;
       }
       
-      // Set initial state for next page based on direction
+      // --- Animasi transisi normal ---
+      const flipDuration = getComputedStyle(document.documentElement)
+        .getPropertyValue('--flip-duration').trim() || '0.9s';
+      
       if (direction === 'next') {
+        // Siapkan halaman baru di posisi awal (tersembunyi dari kanan)
         nextPageEl.style.transition = 'none';
         nextPageEl.style.transformOrigin = 'left center';
         nextPageEl.style.transform = 'rotateY(90deg)';
         nextPageEl.style.opacity = '0';
         nextPageEl.style.visibility = 'visible';
         nextPageEl.style.zIndex = '6';
+        nextPageEl.offsetHeight; // Force reflow
         
-        // Force reflow
-        nextPageEl.offsetHeight;
-        
-        // Animate current page out - flip to the left
-        currentPageEl.style.transition = `transform ${getComputedStyle(document.documentElement).getPropertyValue('--flip-duration')} var(--flip-ease), opacity 0.4s ease`;
+        // Halaman lama terbalik keluar
+        currentPageEl.style.transition = `transform ${flipDuration} var(--flip-ease), opacity 0.4s ease`;
         currentPageEl.style.transformOrigin = 'left center';
         currentPageEl.style.transform = 'rotateY(-180deg)';
         currentPageEl.style.opacity = '0';
         currentPageEl.style.zIndex = '4';
         
-        // After a slight delay, bring in the next page
+        // Halaman baru masuk
         setTimeout(() => {
-          nextPageEl.style.transition = `transform ${getComputedStyle(document.documentElement).getPropertyValue('--flip-duration')} var(--flip-ease), opacity 0.4s ease`;
+          nextPageEl.style.transition = `transform ${flipDuration} var(--flip-ease), opacity 0.4s ease`;
           nextPageEl.style.transform = 'rotateY(0deg)';
           nextPageEl.style.opacity = '1';
           nextPageEl.classList.add('active');
         }, 150);
         
       } else {
-        // Previous direction - flip from right
+        // Arah sebelumnya: halaman baru dari kiri
         nextPageEl.style.transition = 'none';
         nextPageEl.style.transformOrigin = 'right center';
         nextPageEl.style.transform = 'rotateY(-90deg)';
         nextPageEl.style.opacity = '0';
         nextPageEl.style.visibility = 'visible';
         nextPageEl.style.zIndex = '6';
+        nextPageEl.offsetHeight; // Force reflow
         
-        // Force reflow
-        nextPageEl.offsetHeight;
-        
-        // Animate current page out - flip to the right
-        currentPageEl.style.transition = `transform ${getComputedStyle(document.documentElement).getPropertyValue('--flip-duration')} var(--flip-ease), opacity 0.4s ease`;
+        currentPageEl.style.transition = `transform ${flipDuration} var(--flip-ease), opacity 0.4s ease`;
         currentPageEl.style.transformOrigin = 'right center';
         currentPageEl.style.transform = 'rotateY(180deg)';
         currentPageEl.style.opacity = '0';
         currentPageEl.style.zIndex = '4';
         
-        // After a slight delay, bring in the previous page
         setTimeout(() => {
-          nextPageEl.style.transition = `transform ${getComputedStyle(document.documentElement).getPropertyValue('--flip-duration')} var(--flip-ease), opacity 0.4s ease`;
+          nextPageEl.style.transition = `transform ${flipDuration} var(--flip-ease), opacity 0.4s ease`;
           nextPageEl.style.transform = 'rotateY(0deg)';
           nextPageEl.style.opacity = '1';
           nextPageEl.classList.add('active');
         }, 150);
       }
       
-      // Clean up after animation completes
+      // Bersihkan setelah animasi selesai
       setTimeout(() => {
         currentPageEl.classList.remove('active');
         currentPageEl.style.transform = '';
@@ -1162,37 +1212,47 @@
       }, 1000);
     }
     
+    // ============================================================
+    // Update tombol navigasi (state & label)
+    // ============================================================
     function updateNavButtons() {
       prevBtn.disabled = currentPage === 0;
       
-      // Update button text on last page
       if (currentPage === pages.length - 1) {
         nextBtn.innerHTML = '<i class="fas fa-book"></i> Tutup Buku';
+        nextBtn.setAttribute('aria-label', 'Tutup buku');
       } else {
         nextBtn.innerHTML = 'Berikutnya <i class="fas fa-chevron-right"></i>';
+        nextBtn.setAttribute('aria-label', 'Halaman berikutnya');
       }
       
-      // Update click zone right hint
-      if (clickZoneRight.style.display !== 'none') {
+      // Update ikon click zone kanan
+      const clickZoneRightStyle = window.getComputedStyle(clickZoneRight);
+      if (clickZoneRightStyle.display !== 'none') {
+        const icon = clickZoneRight.querySelector('i');
         if (currentPage === pages.length - 1) {
-          clickZoneRight.querySelector('i').className = 'fas fa-book';
+          icon.className = 'fas fa-book';
           clickZoneRight.title = 'Tutup buku';
         } else {
-          clickZoneRight.querySelector('i').className = 'fas fa-chevron-right';
+          icon.className = 'fas fa-chevron-right';
           clickZoneRight.title = 'Halaman berikutnya';
         }
       }
     }
     
-    // Close book with proper animation - last page flips, then cover closes
+    // ============================================================
+    // BUG FIX #4: closeBook - set isAnimating = true selama animasi
+    // ============================================================
     function closeBook() {
-      if (isAnimatingClose) return;
+      if (isAnimatingClose || isAnimating) return;
       isAnimatingClose = true;
+      isAnimating = true; // Blokir SEMUA input
       
       const lastPage = pages[currentPage];
       socialFloating.classList.remove('show');
+      socialFloating.setAttribute('aria-hidden', 'true');
       
-      // Step 1: Flip the last page closed
+      // Step 1: Halaman terakhir terbalik tertutup
       lastPage.style.transition = 'none';
       lastPage.style.transformOrigin = 'left center';
       lastPage.style.zIndex = '15';
@@ -1202,17 +1262,18 @@
       lastPage.style.transform = 'rotateY(-170deg)';
       lastPage.style.opacity = '0';
       
-      // Step 2: After page flips, close the book cover
+      // Step 2: Cover buku menutup
       setTimeout(() => {
         bookCover.classList.remove('open');
         bookCover.classList.add('closing');
         bookCover.style.zIndex = '20';
+        bookCover.setAttribute('aria-hidden', 'false');
         
-        // Hide UI elements
-        hideBookUI();
+        // Sembunyikan UI
+        setBookOpenState(false);
       }, 600);
       
-      // Step 3: Clean up everything
+      // Step 3: Bersihkan semua state
       setTimeout(() => {
         lastPage.classList.remove('active');
         lastPage.style.transform = '';
@@ -1223,12 +1284,9 @@
         lastPage.style.zIndex = '';
         
         bookCover.classList.remove('closing');
-        isAnimatingClose = false;
-        currentPage = -1;
-        prevBtn.disabled = true;
-        nextBtn.innerHTML = 'Berikutnya <i class="fas fa-chevron-right"></i>';
+        bookCover.style.zIndex = '';
         
-        // Reset all pages
+        // Reset semua halaman
         pages.forEach(p => {
           p.classList.remove('active');
           p.style.opacity = '';
@@ -1239,7 +1297,16 @@
           p.style.zIndex = '';
         });
         
-        // Reset progress dots
+        // Reset state
+        isAnimatingClose = false;
+        isAnimating = false;
+        currentPage = 0; // BUG FIX: Jangan set ke -1! Set ke 0 agar aman.
+        
+        // Reset tombol & indikator
+        prevBtn.disabled = true;
+        nextBtn.innerHTML = 'Berikutnya <i class="fas fa-chevron-right"></i>';
+        nextBtn.setAttribute('aria-label', 'Halaman berikutnya');
+        
         const dots = progressDots.querySelectorAll('.progress-dot');
         dots.forEach((dot, index) => {
           dot.classList.toggle('active', index === 0);
@@ -1249,68 +1316,110 @@
       }, 2000);
     }
     
-    // Navigation event listeners
+    // ============================================================
+    // Event listeners tombol navigasi
+    // ============================================================
     nextBtn.addEventListener('click', function() {
-      if (isAnimating || isAnimatingClose) return;
+      if (!canInteract()) return;
       if (currentPage < pages.length - 1) {
         showPage(currentPage + 1, 'next');
       } else {
         closeBook();
       }
     });
+    
     prevBtn.addEventListener('click', function() {
-      if (isAnimating || isAnimatingClose) return;
+      if (!canInteract()) return;
       if (currentPage > 0) showPage(currentPage - 1, 'prev');
     });
     
+    // ============================================================
     // Keyboard navigation
+    // ============================================================
     document.addEventListener('keydown', function(e) {
-      if (isAnimating || isAnimatingClose) return;
-      if (!isBookOpen) return;
+      // Jika fokus di input, abaikan navigasi keyboard
+      const activeTag = document.activeElement.tagName;
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') return;
+      
+      if (!canInteract()) return;
       
       if (e.key === 'ArrowRight') {
+        e.preventDefault();
         if (currentPage < pages.length - 1) {
           showPage(currentPage + 1, 'next');
         } else {
           closeBook();
         }
-      } else if (e.key === 'ArrowLeft' && currentPage > 0) {
-        showPage(currentPage - 1, 'prev');
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (currentPage > 0) showPage(currentPage - 1, 'prev');
       } else if (e.key === 'Escape') {
+        e.preventDefault();
         closeBook();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        showPage(0, currentPage > 0 ? 'prev' : 'next');
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        showPage(pages.length - 1, 'next');
       }
     });
     
-    // Resize handler - update UI visibility when window resizes
-    window.addEventListener('resize', updateUIVisibility);
-    
-    // Touch swipe for mobile
+    // ============================================================
+    // Touch swipe untuk mobile - dengan threshold yang lebih aman
+    // ============================================================
     let touchStartX = 0;
     let touchStartY = 0;
+    let touchStartTime = 0;
+    
     bookContainer.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    });
+      if (e.touches.length !== 1) return;
+      touchStartX = e.touches[0].screenX;
+      touchStartY = e.touches[0].screenY;
+      touchStartTime = Date.now();
+    }, { passive: true });
+    
     bookContainer.addEventListener('touchend', e => {
-      if (isAnimating || isAnimatingClose || !isBookOpen) return;
+      if (!canInteract()) return;
+      if (e.changedTouches.length !== 1) return;
+      
       const touchEndX = e.changedTouches[0].screenX;
       const touchEndY = e.changedTouches[0].screenY;
       const diffX = touchEndX - touchStartX;
       const diffY = touchEndY - touchStartY;
+      const elapsed = Date.now() - touchStartTime;
       
-      // Only trigger if horizontal movement is greater than vertical
-      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-        if (diffX < 0) { // Swipe left - next page
+      // Hanya trigger jika:
+      // 1. Gerakan horizontal > vertikal
+      // 2. Jarak > 60px (threshold lebih tinggi dari sebelumnya)
+      // 3. Durasi < 500ms (gesture cepat, bukan scroll lambat)
+      if (Math.abs(diffX) > Math.abs(diffY) && 
+          Math.abs(diffX) > 60 && 
+          elapsed < 500) {
+        
+        if (diffX < 0) { // Swipe kiri = halaman berikutnya
           if (currentPage < pages.length - 1) {
             showPage(currentPage + 1, 'next');
-          } else {
-            closeBook();
           }
-        } else if (diffX > 0 && currentPage > 0) { // Swipe right - previous page
+          // BUG FIX: Swipe di halaman terakhir TIDAK menutup buku otomatis
+          // Pengguna harus menekan tombol "Tutup Buku" secara eksplisit
+        } else if (diffX > 0 && currentPage > 0) { // Swipe kanan = halaman sebelumnya
           showPage(currentPage - 1, 'prev');
         }
       }
-    });
+    }, { passive: true });
+    
+    // ============================================================
+    // Inisialisasi awal
+    // ============================================================
+    // Tidak perlu memanggil updateUIVisibility() terpisah karena
+    // sistem class-based + CSS media query yang mengatur semuanya.
+    // Cukup pastikan state awal bersih.
+    currentPage = 0;
+    updateNavButtons();
+    
+    // Fokus ke container untuk aksesibilitas keyboard
+    bookContainer.focus();
   });
 </script>
 </body>
