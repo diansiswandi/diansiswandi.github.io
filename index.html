@@ -14,9 +14,9 @@
 <!-- ===== Open Graph (share preview) ===== -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://diansiswandi.github.io/" />
-<meta property="og:title" content="Riwayat Hidup - DIAN SISWANDI, S.Kom | Web Developer & Data Analyst" />
-<meta property="og:description" content="Web Developer & Data Analyst dengan pengalaman 7+ tahun. Lihat riwayat Hidup, skills, dan proyek saya." />
-<meta property="og:image" content="https://diansiswandi.github.io/images/photoprofil.jpg" />
+<meta property="og:title" content="PRiwayat Hidup - DIAN SISWANDI, S.Kom | Web Developer & Data Analyst" />
+<meta property="og:description" content="Web Developer & Data Analyst dengan pengalaman 7+ tahun. Lihat Riwayat Hidup, skills, dan proyek saya." />
+<meta property="og:image" content="https://diansiswandi.github.io/" />
 <meta property="og:locale" content="id_ID" />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -50,6 +50,16 @@
 
 <!-- ===== Favicon (tipe diperbaiki) ===== -->
 <link rel="icon" type="image/jpeg" href="images/photoprofil.jpg" />
+
+<!-- ===== Google reCAPTCHA v3 (lapisan anti-spam kedua) =====
+     Cara aktifkan:
+     1. Daftar di https://www.google.com/recaptcha/admin -> pilih reCAPTCHA v3
+     2. Masukkan domain: diansiswandi.github.io
+     3. Ganti YOUR_SITE_KEY di bawah dengan Site Key Anda
+     4. Untuk verifikasi penuh (skor bot), butuh backend (Formspree/Netlify/Cloudflare Worker)
+        dengan Secret Key. Tanpa backend, token disertakan di body email untuk cek manual.
+-->
+<script src="https://www.google.com/recaptcha/api.js?render=6LcTYeMtAAAAADjaWHe7_MqEK9iBrdyzpcMaVUUD"></script>
 
 <style>
   :root {
@@ -523,6 +533,17 @@
   .success-card { background: #fff; border-radius: 20px; padding: 36px 32px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: zoomIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
   .success-icon { width: 70px; height: 70px; margin: 0 auto 18px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2rem; box-shadow: 0 8px 24px rgba(16,185,129,0.4); animation: pulseCheck 1.5s ease infinite; }
   @keyframes pulseCheck { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); } 50% { box-shadow: 0 0 0 14px rgba(16,185,129,0); } }
+  /* ===== Warning modal (larangan inspeksi/copy) ===== */
+  .warn-modal { position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(6px); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .warn-modal.show { display: flex; animation: fadeIn 0.25s ease; }
+  .warn-card { background: #fff; border-radius: 20px; padding: 32px 28px; max-width: 340px; width: 100%; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.4); animation: zoomIn 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+  .warn-icon { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%; background: linear-gradient(135deg,#f59e0b,#dc2626); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.8rem; box-shadow: 0 8px 24px rgba(220,38,38,0.4); animation: pulseWarn 1.2s ease infinite; }
+  @keyframes pulseWarn { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  .warn-btn { background: linear-gradient(135deg,#f59e0b,#dc2626); color: #fff; border: none; padding: 10px 24px; border-radius: 999px; font-weight: 500; cursor: pointer; margin-top: 16px; box-shadow: 0 4px 14px rgba(220,38,38,0.35); transition: transform 0.2s ease; }
+  .warn-btn:hover { transform: translateY(-2px); }
+  /* Blokir seleksi teks di seluruh halaman (kecuali input form) */
+  body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+  input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 </style>
 </head>
 <body>
@@ -914,6 +935,16 @@
   </div>
 </div>
 
+<!-- ===== Warning Modal (larangan inspeksi / copy-paste) ===== -->
+<div class="warn-modal" id="warnModal" role="dialog" aria-modal="true">
+  <div class="warn-card">
+    <div class="warn-icon"><i class="fas fa-triangle-exclamation"></i></div>
+    <h3 class="text-lg font-bold text-slate-800">Dilarang!</h3>
+    <p class="text-sm text-slate-600 mt-2 leading-relaxed">Dilarang melakukan hal tersebut — inspeksi kode, klik kanan, copy-paste, atau melihat sumber halaman tidak diizinkan di website ini.</p>
+    <button class="warn-btn" onclick="closeWarnModal()">Oke, Saya Mengerti</button>
+  </div>
+</div>
+
 <script>
 (function() {
   'use strict';
@@ -1104,22 +1135,66 @@
       generateCaptcha(); /* ganti soal agar bot tidak nebak berulang */
       return false;
     }
-    /* 3. Lolos verifikasi: buka mailto + tampilkan popup sukses */
+    /* 3. Lolos verifikasi: ambil token reCAPTCHA v3 (jika ada), buka mailto + popup sukses */
     var name = document.getElementById('cfName').value;
     var email = document.getElementById('cfEmail').value;
     var msg = document.getElementById('cfMsg').value;
     var subject = encodeURIComponent('Portofolio - Pesan dari ' + name);
-    var body = encodeURIComponent('Nama: ' + name + '\nEmail: ' + email + '\n\nPesan:\n' + msg);
-    window.location.href = 'mailto:info.diansiswandi@gmail.com?subject=' + subject + '&body=' + body;
-    document.getElementById('successModal').classList.add('show');
-    /* reset form */
-    document.getElementById('cfName').value = '';
-    document.getElementById('cfEmail').value = '';
-    document.getElementById('cfMsg').value = '';
-    generateCaptcha();
+
+    function kirimEmail(extraBody) {
+      var body = encodeURIComponent('Nama: ' + name + '\nEmail: ' + email + '\n\nPesan:\n' + msg + (extraBody || ''));
+      window.location.href = 'mailto:info.diansiswandi@gmail.com?subject=' + subject + '&body=' + body;
+      document.getElementById('successModal').classList.add('show');
+      document.getElementById('cfName').value = '';
+      document.getElementById('cfEmail').value = '';
+      document.getElementById('cfMsg').value = '';
+      generateCaptcha();
+    }
+
+    // Jika reCAPTCHA v3 aktif (site key sudah diganti), ambil token dulu
+    if (typeof grecaptcha !== 'undefined' && typeof grecaptcha.execute === 'function') {
+      try {
+        grecaptcha.execute('6LcTYeMtAAAAAKnavzNwD0bBB-eomd6-650Qx_I1', { action: 'kontak' }).then(function(token) {
+          kirimEmail('\n\n[reCAPTCHA v3 token]\n' + token);
+        }).catch(function() { kirimEmail(); });
+      } catch(err) { kirimEmail(); }
+    } else {
+      kirimEmail(); // site key belum diganti -> kirim langsung tanpa blokir
+    }
+    return true;
   };
   window.closeSuccessModal = function() { document.getElementById('successModal').classList.remove('show'); };
   document.getElementById('successModal').addEventListener('click', function(e) { if (e.target === this) closeSuccessModal(); });
+
+  /* ===== PROTEKSI: blokir klik kanan, copy-paste, seleksi teks & shortcut inspeksi ===== */
+  var warnModal = document.getElementById('warnModal');
+  function showWarn() { warnModal.classList.add('show'); }
+  window.closeWarnModal = function() { warnModal.classList.remove('show'); };
+  warnModal.addEventListener('click', function(e) { if (e.target === warnModal) closeWarnModal(); });
+
+  // 1. Blokir klik kanan (context menu / inspeksi)
+  document.addEventListener('contextmenu', function(e) { e.preventDefault(); showWarn(); return false; });
+
+  // 2. Blokir copy, cut, paste
+  ['copy', 'cut', 'paste'].forEach(function(evt) {
+    document.addEventListener(evt, function(e) { e.preventDefault(); showWarn(); return false; });
+  });
+
+  // 3. Blokir seleksi teks (drag mouse) — kecuali di input form
+  document.addEventListener('selectstart', function(e) {
+    if (!e.target.closest('input, textarea')) { e.preventDefault(); return false; }
+  });
+
+  // 4. Blokir shortcut keyboard inspeksi: F12, Ctrl+Shift+I/J/C, Ctrl+U (view source), Ctrl+S (save), Ctrl+P (print)
+  document.addEventListener('keydown', function(e) {
+    var key = (e.key || '').toLowerCase();
+    if (key === 'f12') { e.preventDefault(); showWarn(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
+    if (e.ctrlKey && ['u', 's', 'p'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
+    // Mac: Cmd+Option+I / Cmd+U / Cmd+S
+    if (e.metaKey && e.altKey && key === 'i') { e.preventDefault(); showWarn(); return false; }
+    if (e.metaKey && ['u', 's'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
+  });
 
   updateIndicator(0);
 })();
