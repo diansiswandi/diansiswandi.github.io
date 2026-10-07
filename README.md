@@ -28,4 +28,14 @@ Website ini dibuat menggunakan kombinasi HTML, CSS, JavaScript dan Bootstrap 5. 
 > Website `https://diansiswandi.github.io/`
 
 #### Terakhir Update
-- `Tanggal 22-September-2025 Pukul 10:30 Wib`
+- `Tanggal 07-Oktober-2026 Pukul 15:48 Wib`
+
+- Perubahan utama:
+- Tailwind CSS + animasi modern (gradient bergerak, fade-in, skill bar)
+- Navigasi TAMPIL di semua perangkat termasuk HP layar kecil
+- Konten tidak terpotong (padding bawah + scroll)
+- SEO meta tags + Open Graph ditambahkan
+- Skill bar animasi (6 skill teknis)
+- 3 card project (ganti placeholder placehold.co)
+- Form kontak (mailto)
+- Konsep buku digital (book-flip) dipertahankan
