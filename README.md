@@ -30,7 +30,7 @@ Website ini dibuat menggunakan kombinasi HTML, CSS, JavaScript dan Bootstrap 5. 
 #### Terakhir Update
 - `Tanggal 07-Oktober-2026 Pukul 15:48 Wib`
 
-- Perubahan utama:
+#### Perubahan utama:
 - Tailwind CSS + animasi modern (gradient bergerak, fade-in, skill bar)
 - Navigasi TAMPIL di semua perangkat termasuk HP layar kecil
 - Konten tidak terpotong (padding bawah + scroll)
