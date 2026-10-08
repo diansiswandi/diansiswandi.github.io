@@ -14,9 +14,9 @@
 <!-- ===== Open Graph (share preview) ===== -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://diansiswandi.github.io/" />
-<meta property="og:title" content="PRiwayat Hidup - DIAN SISWANDI, S.Kom | Web Developer & Data Analyst" />
-<meta property="og:description" content="Web Developer & Data Analyst dengan pengalaman 7+ tahun. Lihat Riwayat Hidup, skills, dan proyek saya." />
-<meta property="og:image" content="https://diansiswandi.github.io/" />
+<meta property="og:title" content="Riwayat Hidup - DIAN SISWANDI, S.Kom | Web Developer & Data Analyst" />
+<meta property="og:description" content="Web Developer & Data Analyst dengan pengalaman 7+ tahun. Lihat portofolio, skills, dan proyek saya." />
+<meta property="og:image" content="https://diansiswandi.github.io/images/photoprofil.jpg" />
 <meta property="og:locale" content="id_ID" />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -544,6 +544,36 @@
   /* Blokir seleksi teks di seluruh halaman (kecuali input form) */
   body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
   input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+  /* ===== Pixel Naruto vs Sasuke (RINGAN: SVG inline + animasi transform saja, tanpa gambar) ===== */
+  .pixel-watchers { display: inline-flex; gap: 8px; align-items: flex-end; margin-left: 10px; vertical-align: bottom; pointer-events: none; }
+  .watcher-bob { animation: bob 2.6s ease-in-out infinite; }
+  .watcher-bob.delay { animation-delay: -1.3s; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .pixel-fight { position: absolute; top: -14px; left: 0; right: 0; height: 0; pointer-events: none; z-index: 6; overflow: visible; }
+  .pixel-sprite { position: absolute; bottom: 0; will-change: transform; pointer-events: none; }
+  .sprite-naruto { animation: narutoRun 8s ease-in-out infinite; }
+  .sprite-sasuke { animation: sasukeChase 8s ease-in-out infinite; animation-delay: 0.7s; }
+  @keyframes narutoRun {
+    0%   { transform: translate(0%, 0) scaleX(1); }
+    18%  { transform: translate(28%, -16px) scaleX(1); }
+    36%  { transform: translate(56%, 0) scaleX(1); }
+    50%  { transform: translate(72%, -20px) scaleX(-1); }
+    68%  { transform: translate(40%, 0) scaleX(-1); }
+    84%  { transform: translate(12%, -14px) scaleX(-1); }
+    100% { transform: translate(0%, 0) scaleX(1); }
+  }
+  @keyframes sasukeChase {
+    0%   { transform: translate(85%, 0) scaleX(-1); }
+    18%  { transform: translate(60%, -14px) scaleX(-1); }
+    36%  { transform: translate(30%, 0) scaleX(-1); }
+    50%  { transform: translate(12%, -18px) scaleX(1); }
+    68%  { transform: translate(45%, 0) scaleX(1); }
+    84%  { transform: translate(72%, -12px) scaleX(1); }
+    100% { transform: translate(85%, 0) scaleX(-1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sprite-naruto, .sprite-sasuke, .watcher-bob { animation: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -558,7 +588,7 @@
   <!-- ===== COVER ===== -->
   <div class="book-cover" id="bookCover" tabindex="0" role="button" aria-label="Buka portofolio">
     <img src="images/photoprofil.jpg" alt="Foto Dian Siswandi" class="cover-avatar" onerror="this.style.display='none'" />
-    <h1 class="font-serif font-bold tracking-widest" style="font-size:clamp(2rem,6vw,3.5rem); text-shadow:0 4px 20px rgba(0,0,0,0.4);">RIWAYAT HIDUP</h1>
+    <h1 class="font-serif font-bold tracking-widest" style="font-size:clamp(2rem,6vw,3.5rem); text-shadow:0 4px 20px rgba(0,0,0,0.4);">PORTFOLIO</h1>
     <p class="mt-3 font-medium tracking-wide" style="font-size:clamp(0.85rem,2vw,1.1rem); opacity:0.95;">DIAN SISWANDI, S.Kom</p>
     <p class="mt-1 font-light" style="font-size:clamp(0.75rem,1.8vw,0.95rem); opacity:0.8;">Web Developer &amp; Data Analyst</p>
     <div class="cover-cta"><i class="fas fa-book-open mr-2"></i>Klik untuk membuka</div>
@@ -731,11 +761,11 @@
         </div>
       </div>
     </div>
-    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider mb-3 fade-item"><i class="fas fa-building text-pink-500 mr-2"></i>Pekerja Tetap</h3>
-    <div class="info-card fade-item">
+    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider mb-3 fade-item"><i class="fas fa-user-clock text-amber-500 mr-2"></i>Pekerja Honorer</h3>
+    <div class="info-card fade-item mb-5">
       <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
-        <h4 class="font-bold text-slate-800"><i class="fas fa-id-badge text-indigo-500 mr-2"></i>Karyawan Perjanjian Kontrak</h4>
-        <span class="tag bg-pink-100 text-pink-600"><i class="fas fa-calendar mr-1"></i>2016 — Sekarang</span>
+        <h4 class="font-bold text-slate-800"><i class="fas fa-id-badge text-indigo-500 mr-2"></i>Karyawan Honorer</h4>
+        <span class="tag bg-amber-100 text-amber-700"><i class="fas fa-calendar mr-1"></i>2016 — 30 Sep 2024</span>
       </div>
       <p class="text-xs text-indigo-600 font-medium mb-3">Instansi Pemerintah</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -743,7 +773,21 @@
         <div class="bg-slate-50 rounded-lg px-3 py-2 text-sm"><span class="tag bg-indigo-100 text-indigo-600">1 Th</span> Administrator Database</div>
         <div class="bg-slate-50 rounded-lg px-3 py-2 text-sm"><span class="tag bg-indigo-100 text-indigo-600">3 Bln</span> Staf Keuangan</div>
         <div class="bg-slate-50 rounded-lg px-3 py-2 text-sm"><span class="tag bg-indigo-100 text-indigo-600">5 Th</span> Operator Keuangan</div>
-        <div class="bg-slate-50 rounded-lg px-3 py-2 text-sm sm:col-span-2"><span class="tag bg-green-100 text-green-600">3 Th — Sekarang</span> Operator Perencanaan Keuangan</div>
+        <div class="bg-slate-50 rounded-lg px-3 py-2 text-sm sm:col-span-2"><span class="tag bg-amber-100 text-amber-700">1 Th</span> Operator Perencanaan Keuangan (bagian awal)</div>
+      </div>
+    </div>
+
+    <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider mb-3 fade-item"><i class="fas fa-building text-green-500 mr-2"></i>Pekerja Tetap</h3>
+    <div class="info-card fade-item">
+      <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+        <h4 class="font-bold text-slate-800"><i class="fas fa-user-tie text-green-600 mr-2"></i>Pegawai Tetap</h4>
+        <span class="tag bg-green-100 text-green-700"><i class="fas fa-calendar mr-1"></i>30 September 2024 — Sekarang</span>
+      </div>
+      <p class="text-xs text-indigo-600 font-medium mb-3">Instansi Pemerintah</p>
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg px-4 py-3 text-sm">
+        <span class="tag bg-green-600 text-white"><i class="fas fa-briefcase mr-1"></i>Jabatan</span>
+        <span class="font-semibold text-slate-800 ml-2">Operator Perencanaan Keuangan</span>
+        <p class="text-xs text-slate-500 mt-2"><i class="fas fa-circle-info mr-1"></i>Bagian akhir dari jabatan Operator Perencanaan Keuangan (dilanjutkan dari status honorer, kini sebagai pegawai tetap).</p>
       </div>
     </div>
   </section>
@@ -849,7 +893,12 @@
 
   <!-- ===== HALAMAN 8: KONTAK ===== -->
   <section class="book-content" data-page="7">
-    <h2 class="page-title fade-item">Kontak Saya</h2>
+    <h2 class="page-title fade-item">Kontak Saya<span class="pixel-watchers" aria-hidden="true">
+      <!-- Hinata (berdiri) -->
+      <span class="watcher-bob"><svg viewBox="0 0 12 16" width="20" height="27" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="6" fill="#1a237e"/><rect x="2" y="2" width="1" height="6" fill="#1a237e"/><rect x="9" y="2" width="1" height="6" fill="#1a237e"/><rect x="4" y="2" width="4" height="3" fill="#ffcc99"/><rect x="5" y="3" width="1" height="1" fill="#fff"/><rect x="6" y="3" width="1" height="1" fill="#fff"/><rect x="3" y="6" width="6" height="5" fill="#ce93d8"/><rect x="5" y="6" width="2" height="5" fill="#f3e5f5"/><rect x="3" y="11" width="2" height="4" fill="#4527a0"/><rect x="7" y="11" width="2" height="4" fill="#4527a0"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></span>
+      <!-- Sakura (duduk) -->
+      <span class="watcher-bob delay"><svg viewBox="0 0 12 12" width="20" height="20" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#f48fb1"/><rect x="2" y="1" width="1" height="2" fill="#f48fb1"/><rect x="9" y="1" width="1" height="2" fill="#f48fb1"/><rect x="3" y="1" width="6" height="1" fill="#c2185b"/><rect x="3" y="2" width="6" height="3" fill="#ffcc99"/><rect x="4" y="3" width="1" height="1" fill="#2d3436"/><rect x="7" y="3" width="1" height="1" fill="#2d3436"/><rect x="3" y="5" width="6" height="4" fill="#e53935"/><rect x="5" y="5" width="2" height="4" fill="#ffcdd2"/><rect x="2" y="9" width="8" height="2" fill="#43a047"/><rect x="2" y="11" width="8" height="1" fill="#2d3436"/></svg></span>
+    </span></h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="space-y-3">
         <div class="info-card fade-item">
@@ -870,7 +919,12 @@
           </div>
         </div>
       </div>
-      <form class="fade-item space-y-3" onsubmit="sendMessage(event)" novalidate>
+      <form class="fade-item space-y-3 relative" onsubmit="sendMessage(event)" novalidate>
+        <!-- Naruto vs Sasuke kejar-kejaran di atas kolom form (SVG pixel ringan) -->
+        <div class="pixel-fight" aria-hidden="true">
+          <div class="pixel-sprite sprite-naruto"><svg viewBox="0 0 12 16" width="22" height="30" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#ffd54f"/><rect x="2" y="1" width="1" height="2" fill="#ffd54f"/><rect x="9" y="1" width="1" height="2" fill="#ffd54f"/><rect x="4" y="0" width="1" height="1" fill="#ffd54f"/><rect x="7" y="0" width="1" height="1" fill="#ffd54f"/><rect x="3" y="2" width="6" height="1" fill="#2d3436"/><rect x="5" y="2" width="2" height="1" fill="#b2bec3"/><rect x="3" y="3" width="6" height="3" fill="#ffcc99"/><rect x="4" y="4" width="1" height="1" fill="#2d3436"/><rect x="7" y="4" width="1" height="1" fill="#2d3436"/><rect x="3" y="6" width="6" height="5" fill="#ff9800"/><rect x="5" y="6" width="2" height="5" fill="#fff3e0"/><rect x="2" y="6" width="1" height="4" fill="#ff9800"/><rect x="9" y="6" width="1" height="4" fill="#ff9800"/><rect x="3" y="11" width="2" height="4" fill="#1a237e"/><rect x="7" y="11" width="2" height="4" fill="#1a237e"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></div>
+          <div class="pixel-sprite sprite-sasuke"><svg viewBox="0 0 12 16" width="22" height="30" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="3" fill="#1a237e"/><rect x="2" y="1" width="1" height="3" fill="#1a237e"/><rect x="9" y="1" width="1" height="3" fill="#1a237e"/><rect x="4" y="0" width="1" height="1" fill="#1a237e"/><rect x="7" y="0" width="1" height="1" fill="#1a237e"/><rect x="3" y="3" width="6" height="3" fill="#ffcc99"/><rect x="4" y="4" width="1" height="1" fill="#000"/><rect x="7" y="4" width="1" height="1" fill="#000"/><rect x="3" y="6" width="6" height="1" fill="#3949ab"/><rect x="3" y="7" width="6" height="4" fill="#eceff1"/><rect x="5" y="7" width="2" height="4" fill="#3949ab"/><rect x="2" y="7" width="1" height="4" fill="#eceff1"/><rect x="9" y="7" width="1" height="4" fill="#eceff1"/><rect x="3" y="11" width="2" height="4" fill="#eceff1"/><rect x="7" y="11" width="2" height="4" fill="#eceff1"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></div>
+        </div>
         <!-- Honeypot: field tersembunyi sebagai jebakan bot spam -->
         <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off" />
         <div>
@@ -1139,7 +1193,7 @@
     var name = document.getElementById('cfName').value;
     var email = document.getElementById('cfEmail').value;
     var msg = document.getElementById('cfMsg').value;
-    var subject = encodeURIComponent('Portofolio - Pesan dari ' + name);
+    var subject = encodeURIComponent('Web Riwayat Hidup - Pesan dari ' + name);
 
     function kirimEmail(extraBody) {
       var body = encodeURIComponent('Nama: ' + name + '\nEmail: ' + email + '\n\nPesan:\n' + msg + (extraBody || ''));
