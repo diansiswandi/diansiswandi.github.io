@@ -549,31 +549,12 @@
   .watcher-bob { animation: bob 2.6s ease-in-out infinite; }
   .watcher-bob.delay { animation-delay: -1.3s; }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  .pixel-fight { position: absolute; top: -14px; left: 0; right: 0; height: 0; pointer-events: none; z-index: 6; overflow: visible; }
-  .pixel-sprite { position: absolute; bottom: 0; will-change: transform; pointer-events: none; }
-  .sprite-naruto { animation: narutoRun 8s ease-in-out infinite; }
-  .sprite-sasuke { animation: sasukeChase 8s ease-in-out infinite; animation-delay: 0.7s; }
-  @keyframes narutoRun {
-    0%   { transform: translate(0%, 0) scaleX(1); }
-    18%  { transform: translate(28%, -16px) scaleX(1); }
-    36%  { transform: translate(56%, 0) scaleX(1); }
-    50%  { transform: translate(72%, -20px) scaleX(-1); }
-    68%  { transform: translate(40%, 0) scaleX(-1); }
-    84%  { transform: translate(12%, -14px) scaleX(-1); }
-    100% { transform: translate(0%, 0) scaleX(1); }
-  }
-  @keyframes sasukeChase {
-    0%   { transform: translate(85%, 0) scaleX(-1); }
-    18%  { transform: translate(60%, -14px) scaleX(-1); }
-    36%  { transform: translate(30%, 0) scaleX(-1); }
-    50%  { transform: translate(12%, -18px) scaleX(1); }
-    68%  { transform: translate(45%, 0) scaleX(1); }
-    84%  { transform: translate(72%, -12px) scaleX(1); }
-    100% { transform: translate(85%, 0) scaleX(-1); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .sprite-naruto, .sprite-sasuke, .watcher-bob { animation: none !important; }
-  }
+  /* Sembunyikan sprite CSS lama (diganti canvas fight) */
+  .pixel-fight, .pixel-sprite { display: none !important; }
+  /* ===== Canvas Pixel Fight (JS-driven, ringan: hanya aktif di halaman Kontak) ===== */
+  #fightCanvas { width: 100%; height: 140px; display: block; border-radius: 14px; border: 1px solid #e0e7ff; box-shadow: 0 4px 14px rgba(99,102,241,0.12); margin-bottom: 18px; background: #eef2ff; image-rendering: pixelated; }
+  @media (max-width: 640px) { #fightCanvas { height: 110px; } }
+  @media (prefers-reduced-motion: reduce) { #fightCanvas { display: none; } }
 </style>
 </head>
 <body>
@@ -588,7 +569,7 @@
   <!-- ===== COVER ===== -->
   <div class="book-cover" id="bookCover" tabindex="0" role="button" aria-label="Buka portofolio">
     <img src="images/photoprofil.jpg" alt="Foto Dian Siswandi" class="cover-avatar" onerror="this.style.display='none'" />
-    <h1 class="font-serif font-bold tracking-widest" style="font-size:clamp(2rem,6vw,3.5rem); text-shadow:0 4px 20px rgba(0,0,0,0.4);">PORTFOLIO</h1>
+    <h1 class="font-serif font-bold tracking-widest" style="font-size:clamp(2rem,6vw,3.5rem); text-shadow:0 4px 20px rgba(0,0,0,0.4);">RIWAYAT HIDUP</h1>
     <p class="mt-3 font-medium tracking-wide" style="font-size:clamp(0.85rem,2vw,1.1rem); opacity:0.95;">DIAN SISWANDI, S.Kom</p>
     <p class="mt-1 font-light" style="font-size:clamp(0.75rem,1.8vw,0.95rem); opacity:0.8;">Web Developer &amp; Data Analyst</p>
     <div class="cover-cta"><i class="fas fa-book-open mr-2"></i>Klik untuk membuka</div>
@@ -899,6 +880,8 @@
       <!-- Sakura (duduk) -->
       <span class="watcher-bob delay"><svg viewBox="0 0 12 12" width="20" height="20" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#f48fb1"/><rect x="2" y="1" width="1" height="2" fill="#f48fb1"/><rect x="9" y="1" width="1" height="2" fill="#f48fb1"/><rect x="3" y="1" width="6" height="1" fill="#c2185b"/><rect x="3" y="2" width="6" height="3" fill="#ffcc99"/><rect x="4" y="3" width="1" height="1" fill="#2d3436"/><rect x="7" y="3" width="1" height="1" fill="#2d3436"/><rect x="3" y="5" width="6" height="4" fill="#e53935"/><rect x="5" y="5" width="2" height="4" fill="#ffcdd2"/><rect x="2" y="9" width="8" height="2" fill="#43a047"/><rect x="2" y="11" width="8" height="1" fill="#2d3436"/></svg></span>
     </span></h2>
+    <!-- Arena pertarungan pixel Naruto vs Sasuke (JS Canvas, full-width) -->
+    <canvas id="fightCanvas" class="fade-item" aria-label="Pertarungan pixel Naruto vs Sasuke"></canvas>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="space-y-3">
         <div class="info-card fade-item">
@@ -1082,6 +1065,10 @@
 
     currentPage = targetIdx;
     updateIndicator(targetIdx);
+    // Start/stop animasi pertarungan pixel hanya saat halaman Kontak aktif (hemat CPU)
+    if (typeof startFight === 'function') {
+      if (targetIdx === 7) { startFight(); } else { stopFight(); }
+    }
 
     setTimeout(function() { isAnimating = false; }, 700);
   }
@@ -1193,7 +1180,7 @@
     var name = document.getElementById('cfName').value;
     var email = document.getElementById('cfEmail').value;
     var msg = document.getElementById('cfMsg').value;
-    var subject = encodeURIComponent('Web Riwayat Hidup - Pesan dari ' + name);
+    var subject = encodeURIComponent('Riwayat Hidup - Pesan dari ' + name);
 
     function kirimEmail(extraBody) {
       var body = encodeURIComponent('Nama: ' + name + '\nEmail: ' + email + '\n\nPesan:\n' + msg + (extraBody || ''));
@@ -1249,6 +1236,132 @@
     if (e.metaKey && e.altKey && key === 'i') { e.preventDefault(); showWarn(); return false; }
     if (e.metaKey && ['u', 's'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
   });
+
+  /* ================= PIXEL FIGHT ENGINE (Canvas + JS) =================
+     Naruto vs Sasuke: gerak bebas, lompat, melee, lempar jurus (Rasengan/Chidori),
+     health bar, efek ledakan partikel. Loop hanya jalan saat halaman Kontak aktif. */
+  var fightCanvas = document.getElementById('fightCanvas');
+  var fctx = fightCanvas ? fightCanvas.getContext('2d') : null;
+  var fightRAF = null, fightW = 600, fightH = 140, groundY = 116, fightTime = 0;
+  var projectiles = [], particles = [], hitTexts = [];
+
+  function resizeFight() {
+    if (!fightCanvas) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    fightW = fightCanvas.offsetWidth || 600;
+    fightH = fightCanvas.offsetHeight || 140;
+    groundY = fightH - 22;
+    fightCanvas.width = fightW * dpr;
+    fightCanvas.height = fightH * dpr;
+    fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function makeFighter(x, facing, p) {
+    return { x: x, y: groundY, vx: 0, vy: 0, hp: 100, facing: facing, state: 'idle',
+             cooldown: 0, hitFlash: 0, onGround: true, p: p };
+  }
+  var N = makeFighter(70, 1, { name: 'Naruto', hair: '#ffd54f', skin: '#ffcc99', body: '#ff9800', leg: '#1a237e', jutsu: '#38bdf8' });
+  var S = makeFighter(530, -1, { name: 'Sasuke', hair: '#1a237e', skin: '#ffcc99', body: '#eceff1', leg: '#90a4ae', jutsu: '#e0f2fe' });
+
+  function burst(x, y, color, n) {
+    for (var i = 0; i < (n || 12); i++) {
+      var a = Math.random() * Math.PI * 2, sp = Math.random() * 2.6 + 0.4;
+      particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.2, life: 22 + Math.random() * 16, color: color, size: 1.5 + Math.random() * 2 });
+    }
+  }
+  function castJutsu(f) {
+    projectiles.push({ x: f.x + f.facing * 12, y: f.y - 12, vx: f.facing * 3.0, owner: f, color: f.p.jutsu, r: f === N ? 5 : 4, life: 140 });
+    burst(f.x + f.facing * 12, f.y - 12, f.p.jutsu, 5);
+  }
+
+  function drawFighter(f) {
+    var p = f.p, x = Math.round(f.x), y = Math.round(f.y), fl = f.facing, flash = f.hitFlash > 0;
+    fctx.fillStyle = 'rgba(0,0,0,0.18)';
+    fctx.beginPath(); fctx.ellipse(x, groundY + 3, 9, 2.5, 0, 0, Math.PI * 2); fctx.fill();
+    var C = function (w, h, dx, dy, col) { fctx.fillStyle = flash ? '#ffffff' : col; fctx.fillRect(x + dx, y + dy, w, h); };
+    C(12, 4, -6, -22, p.hair); C(2, 4, -8, -20, p.hair); C(2, 4, 6, -20, p.hair);
+    C(12, 2, -6, -19, '#2d3436'); C(3, 2, -1.5, -19, '#b2bec3');
+    C(10, 6, -5, -17, p.skin); C(2, 2, fl > 0 ? 1 : -3, -15, '#1e293b');
+    C(10, 8, -5, -11, p.body);
+    if (f.state === 'cast') C(7, 3, fl > 0 ? 5 : -12, -10, p.body);
+    var lo = f.state === 'walk' ? Math.sin(fightTime * 0.35) * 2 : 0;
+    C(4, 3 + lo, -5, -3, p.leg); C(4, 3 - lo, 1, -3, p.leg);
+    C(4, 1, -5, 0, '#2d3436'); C(4, 1, 1, 0, '#2d3436');
+    fctx.fillStyle = 'rgba(15,23,42,0.25)'; fctx.fillRect(x - 13, y - 30, 26, 3.5);
+    fctx.fillStyle = f.hp > 50 ? '#22c55e' : f.hp > 25 ? '#f59e0b' : '#ef4444';
+    fctx.fillRect(x - 13, y - 30, Math.max(0, 26 * f.hp / 100), 3.5);
+    fctx.fillStyle = 'rgba(30,41,59,0.75)'; fctx.font = 'bold 7px Poppins, sans-serif'; fctx.textAlign = 'center';
+    fctx.fillText(p.name, x, y - 33);
+  }
+
+  function fightTick() {
+    fightTime++;
+    fctx.clearRect(0, 0, fightW, fightH);
+    var g = fctx.createLinearGradient(0, 0, 0, fightH);
+    g.addColorStop(0, '#e0e7ff'); g.addColorStop(1, '#fae8ff');
+    fctx.fillStyle = g; fctx.fillRect(0, 0, fightW, fightH);
+    fctx.fillStyle = '#c7d2fe'; fctx.fillRect(0, groundY + 4, fightW, fightH - groundY - 4);
+    fctx.fillStyle = '#818cf8'; fctx.fillRect(0, groundY + 3, fightW, 1.5);
+
+    var fighters = [N, S];
+    fighters.forEach(function (f) {
+      var foe = f === N ? S : N;
+      var dx = foe.x - f.x;
+      f.facing = dx > 0 ? 1 : -1;
+      f.cooldown = Math.max(0, f.cooldown - 1);
+      f.hitFlash = Math.max(0, f.hitFlash - 1);
+      if (Math.abs(dx) > 55) { f.vx = f.facing * 1.15; f.state = 'walk'; }
+      else {
+        f.vx *= 0.75; f.state = 'idle';
+        if (f.cooldown === 0 && Math.random() < 0.045) {
+          f.state = 'attack'; f.cooldown = 28;
+          if (Math.abs(dx) < 24) { foe.hp = Math.max(0, foe.hp - 6); foe.hitFlash = 8; foe.vx = f.facing * 2.5; burst(foe.x, foe.y - 10, '#fbbf24', 8); hitTexts.push({ x: foe.x, y: foe.y - 22, life: 35 }); }
+        }
+      }
+      if (f.cooldown === 0 && Math.random() < 0.014) { f.state = 'cast'; f.cooldown = 55; castJutsu(f); }
+      if (f.onGround && Math.random() < 0.007) { f.vy = -4.6; f.onGround = false; }
+      f.vy += 0.26; f.x += f.vx; f.y += f.vy;
+      if (f.y >= groundY) { f.y = groundY; f.vy = 0; f.onGround = true; }
+      f.x = Math.max(16, Math.min(fightW - 16, f.x));
+      if (f.hp < 100) f.hp += 0.06;
+    });
+
+    for (var i = projectiles.length - 1; i >= 0; i--) {
+      var pr = projectiles[i]; pr.x += pr.vx; pr.life--;
+      particles.push({ x: pr.x, y: pr.y, vx: (Math.random() - 0.5) * 0.6, vy: (Math.random() - 0.5) * 0.6, life: 10, color: pr.color, size: 1.5 });
+      var tgt = pr.owner === N ? S : N;
+      if (Math.abs(pr.x - tgt.x) < 11 && Math.abs(pr.y - (tgt.y - 10)) < 13) {
+        tgt.hp = Math.max(0, tgt.hp - 13); tgt.hitFlash = 10; tgt.vx = pr.vx * 0.7;
+        burst(pr.x, pr.y, pr.color, 14); hitTexts.push({ x: tgt.x, y: tgt.y - 24, life: 40 }); projectiles.splice(i, 1); continue;
+      }
+      if (pr.life <= 0 || pr.x < -5 || pr.x > fightW + 5) { burst(pr.x, pr.y, pr.color, 8); projectiles.splice(i, 1); continue; }
+      fctx.fillStyle = pr.color; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r, 0, Math.PI * 2); fctx.fill();
+      fctx.fillStyle = 'rgba(255,255,255,0.85)'; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r * 0.4, 0, Math.PI * 2); fctx.fill();
+    }
+    for (var j = particles.length - 1; j >= 0; j--) {
+      var pt = particles[j]; pt.x += pt.vx; pt.y += pt.vy; pt.vy += 0.07; pt.life--;
+      if (pt.life <= 0) { particles.splice(j, 1); continue; }
+      fctx.globalAlpha = Math.min(1, pt.life / 18); fctx.fillStyle = pt.color; fctx.fillRect(pt.x, pt.y, pt.size, pt.size); fctx.globalAlpha = 1;
+    }
+    for (var k = hitTexts.length - 1; k >= 0; k--) {
+      var ht = hitTexts[k]; ht.y -= 0.6; ht.life--;
+      if (ht.life <= 0) { hitTexts.splice(k, 1); continue; }
+      fctx.globalAlpha = Math.min(1, ht.life / 30); fctx.fillStyle = '#ef4444'; fctx.font = 'bold 10px Poppins'; fctx.textAlign = 'center';
+      fctx.fillText('HIT!', ht.x, ht.y); fctx.globalAlpha = 1;
+    }
+    drawFighter(N); drawFighter(S);
+    fightRAF = requestAnimationFrame(fightTick);
+  }
+
+  window.startFight = function () {
+    if (!fctx || fightRAF) return;
+    resizeFight();
+    S.x = Math.max(80, fightW - 70);
+    fightRAF = requestAnimationFrame(fightTick);
+  };
+  window.stopFight = function () { if (fightRAF) { cancelAnimationFrame(fightRAF); fightRAF = null; } };
+  window.addEventListener('resize', function () { if (fightRAF) resizeFight(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stopFight(); else if (currentPage === 7) startFight(); });
 
   updateIndicator(0);
 })();
