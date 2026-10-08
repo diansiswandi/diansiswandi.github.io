@@ -549,11 +549,17 @@
   .watcher-bob { animation: bob 2.6s ease-in-out infinite; }
   .watcher-bob.delay { animation-delay: -1.3s; }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  /* Sembunyikan sprite CSS lama (diganti canvas fight) */
-  .pixel-fight, .pixel-sprite { display: none !important; }
-  /* ===== Canvas Pixel Fight (JS-driven, ringan: hanya aktif di halaman Kontak) ===== */
-  #fightCanvas { width: 100%; height: 140px; display: block; border-radius: 14px; border: 1px solid #e0e7ff; box-shadow: 0 4px 14px rgba(99,102,241,0.12); margin-bottom: 18px; background: #eef2ff; image-rendering: pixelated; }
-  @media (max-width: 640px) { #fightCanvas { height: 110px; } }
+  /* Sembunyikan SVG watcher lama (digambar di canvas, lebih besar & mirip anime) */
+  .pixel-watchers, .pixel-fight, .pixel-sprite { display: none !important; }
+  /* ===== Canvas Pixel Fight FULL-PAGE (di belakang form, kartu semi-transparan) ===== */
+  .book-content[data-page="7"] { position: relative; }
+  #fightCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; border-radius: 12px; pointer-events: none; }
+  .book-content[data-page="7"] > * { position: relative; z-index: 1; }
+  .book-content[data-page="7"] .info-card,
+  .book-content[data-page="7"] .form-input,
+  .book-content[data-page="7"] .captcha-box,
+  .book-content[data-page="7"] .nav-btn { background: rgba(255,255,255,0.82) !important; backdrop-filter: blur(3px); }
+  .book-content[data-page="7"] .page-title { text-shadow: 0 1px 6px rgba(255,255,255,0.95); }
   @media (prefers-reduced-motion: reduce) { #fightCanvas { display: none; } }
 </style>
 </head>
@@ -881,7 +887,7 @@
       <span class="watcher-bob delay"><svg viewBox="0 0 12 12" width="20" height="20" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#f48fb1"/><rect x="2" y="1" width="1" height="2" fill="#f48fb1"/><rect x="9" y="1" width="1" height="2" fill="#f48fb1"/><rect x="3" y="1" width="6" height="1" fill="#c2185b"/><rect x="3" y="2" width="6" height="3" fill="#ffcc99"/><rect x="4" y="3" width="1" height="1" fill="#2d3436"/><rect x="7" y="3" width="1" height="1" fill="#2d3436"/><rect x="3" y="5" width="6" height="4" fill="#e53935"/><rect x="5" y="5" width="2" height="4" fill="#ffcdd2"/><rect x="2" y="9" width="8" height="2" fill="#43a047"/><rect x="2" y="11" width="8" height="1" fill="#2d3436"/></svg></span>
     </span></h2>
     <!-- Arena pertarungan pixel Naruto vs Sasuke (JS Canvas, full-width) -->
-    <canvas id="fightCanvas" class="fade-item" aria-label="Pertarungan pixel Naruto vs Sasuke"></canvas>
+    <canvas id="fightCanvas" aria-hidden="true"></canvas>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="space-y-3">
         <div class="info-card fade-item">
@@ -1237,71 +1243,89 @@
     if (e.metaKey && ['u', 's'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
   });
 
-  /* ================= PIXEL FIGHT ENGINE (Canvas + JS) =================
-     Naruto vs Sasuke: gerak bebas, lompat, melee, lempar jurus (Rasengan/Chidori),
-     health bar, efek ledakan partikel. Loop hanya jalan saat halaman Kontak aktif. */
+  /* ================= PIXEL FIGHT ENGINE v2 (Canvas + JS, sprite detail mirip anime) ================= */
   var fightCanvas = document.getElementById('fightCanvas');
   var fctx = fightCanvas ? fightCanvas.getContext('2d') : null;
-  var fightRAF = null, fightW = 600, fightH = 140, groundY = 116, fightTime = 0;
+  var fightRAF = null, fightW = 600, fightH = 400, groundY = 390, fightTime = 0;
   var projectiles = [], particles = [], hitTexts = [];
+  var U = 3; // ukuran pixel fighter (besar)
 
   function resizeFight() {
     if (!fightCanvas) return;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     fightW = fightCanvas.offsetWidth || 600;
-    fightH = fightCanvas.offsetHeight || 140;
-    groundY = fightH - 22;
+    fightH = fightCanvas.offsetHeight || 400;
+    groundY = fightH - 12;
     fightCanvas.width = fightW * dpr;
     fightCanvas.height = fightH * dpr;
     fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function makeFighter(x, facing, p) {
-    return { x: x, y: groundY, vx: 0, vy: 0, hp: 100, facing: facing, state: 'idle',
-             cooldown: 0, hitFlash: 0, onGround: true, p: p };
+  // ---- Pixel maps (14 lebar) ---- H=rambut, S=kulit, E=mata, B=headband, M=plat logam, K=hitam, J=baju, P=celana, O=sepatu, C=kerah, W=kumis, R=bandana
+  var MAP_NARUTO = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","BBBBBMMMMBBBBB","..SSSSSSSSSS..","..SESSSSSESS..","..SWWSSSSWWS..","..SSSSSSSSSS..","..KKJJJJJJKK..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..KJJJJJJJJK..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
+  var MAP_SASUKE = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","HHHHHHHHHHHHHH","..SSSSSSSSSS..","..SESSSSSESS..","..SSSSSSSSSS..","..CCCCCCCCCC..","..CCJJJJJJCC..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
+  var MAP_HINATA = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..","HHHHHHHHHHHHHH","HHSSSSSSSSSSHH","HHSESSSSSESHH","HHSSSSSSSSSSHH","H.HSSSSSSSSH.H","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
+  var MAP_SAKURA = ["....RRRRRR....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","..SSSSSSSSSS..","..SESSSSSESS..","..SSSSSSSSSS..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
+  var COL_NARUTO = {H:'#ffd54f',B:'#1e3a8a',M:'#cbd5e1',S:'#ffcc99',E:'#3b82f6',W:'#d97706',K:'#1f2937',J:'#f97316',P:'#1e40af',O:'#1f2937'};
+  var COL_SASUKE = {H:'#1e1b4b',S:'#ffcc99',E:'#111827',C:'#1e40af',J:'#e5e7eb',P:'#f3f4f6',O:'#1f2937'};
+  var COL_HINATA = {H:'#1e3a8a',S:'#ffcc99',E:'#f8fafc',J:'#c4b5fd',P:'#ddd6fe',O:'#1f2937'};
+  var COL_SAKURA = {R:'#dc2626',H:'#f472b6',S:'#ffcc99',E:'#16a34a',J:'#16a34a',P:'#dc2626',O:'#1f2937'};
+
+  function drawSprite(map, colors, cx, bottomY, u, flip, flash) {
+    var mw = map[0].length, mh = map.length;
+    for (var r = 0; r < mh; r++) {
+      for (var c = 0; c < mw; c++) {
+        var ch = map[r][c];
+        if (ch === '.') continue;
+        var col = flip ? (mw - 1 - c) : c;
+        fctx.fillStyle = flash ? '#ffffff' : (colors[ch] || '#ff00ff');
+        fctx.fillRect(Math.round(cx + (col - mw / 2) * u), Math.round(bottomY - (mh - r) * u), u, u);
+      }
+    }
   }
-  var N = makeFighter(70, 1, { name: 'Naruto', hair: '#ffd54f', skin: '#ffcc99', body: '#ff9800', leg: '#1a237e', jutsu: '#38bdf8' });
-  var S = makeFighter(530, -1, { name: 'Sasuke', hair: '#1a237e', skin: '#ffcc99', body: '#eceff1', leg: '#90a4ae', jutsu: '#e0f2fe' });
+
+  function makeFighter(x, facing, map, colors, name, jutsuColor) {
+    return { x: x, y: groundY, vx: 0, vy: 0, hp: 100, facing: facing, state: 'idle',
+             cooldown: 0, hitFlash: 0, onGround: true, map: map, colors: colors, name: name, jutsuColor: jutsuColor };
+  }
+  var N = makeFighter(70, 1, MAP_NARUTO, COL_NARUTO, 'Naruto', '#38bdf8');
+  var S = makeFighter(530, -1, MAP_SASUKE, COL_SASUKE, 'Sasuke', '#e0f2fe');
 
   function burst(x, y, color, n) {
     for (var i = 0; i < (n || 12); i++) {
-      var a = Math.random() * Math.PI * 2, sp = Math.random() * 2.6 + 0.4;
-      particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.2, life: 22 + Math.random() * 16, color: color, size: 1.5 + Math.random() * 2 });
+      var a = Math.random() * Math.PI * 2, sp = Math.random() * 3 + 0.5;
+      particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.5, life: 24 + Math.random() * 18, color: color, size: 2 + Math.random() * 2.5 });
     }
   }
   function castJutsu(f) {
-    projectiles.push({ x: f.x + f.facing * 12, y: f.y - 12, vx: f.facing * 3.0, owner: f, color: f.p.jutsu, r: f === N ? 5 : 4, life: 140 });
-    burst(f.x + f.facing * 12, f.y - 12, f.p.jutsu, 5);
+    projectiles.push({ x: f.x + f.facing * 16, y: f.y - 34, vx: f.facing * 3.4, owner: f, color: f.jutsuColor, r: f === N ? 8 : 7, life: 160 });
+    burst(f.x + f.facing * 16, f.y - 34, f.jutsuColor, 7);
   }
-
-  function drawFighter(f) {
-    var p = f.p, x = Math.round(f.x), y = Math.round(f.y), fl = f.facing, flash = f.hitFlash > 0;
-    fctx.fillStyle = 'rgba(0,0,0,0.18)';
-    fctx.beginPath(); fctx.ellipse(x, groundY + 3, 9, 2.5, 0, 0, Math.PI * 2); fctx.fill();
-    var C = function (w, h, dx, dy, col) { fctx.fillStyle = flash ? '#ffffff' : col; fctx.fillRect(x + dx, y + dy, w, h); };
-    C(12, 4, -6, -22, p.hair); C(2, 4, -8, -20, p.hair); C(2, 4, 6, -20, p.hair);
-    C(12, 2, -6, -19, '#2d3436'); C(3, 2, -1.5, -19, '#b2bec3');
-    C(10, 6, -5, -17, p.skin); C(2, 2, fl > 0 ? 1 : -3, -15, '#1e293b');
-    C(10, 8, -5, -11, p.body);
-    if (f.state === 'cast') C(7, 3, fl > 0 ? 5 : -12, -10, p.body);
-    var lo = f.state === 'walk' ? Math.sin(fightTime * 0.35) * 2 : 0;
-    C(4, 3 + lo, -5, -3, p.leg); C(4, 3 - lo, 1, -3, p.leg);
-    C(4, 1, -5, 0, '#2d3436'); C(4, 1, 1, 0, '#2d3436');
-    fctx.fillStyle = 'rgba(15,23,42,0.25)'; fctx.fillRect(x - 13, y - 30, 26, 3.5);
+  function drawHpBar(f, w) {
+    var bw = 44, x = Math.round(f.x - bw / 2), y = Math.round(f.y - 20 * U - 14);
+    fctx.fillStyle = 'rgba(15,23,42,0.35)'; fctx.fillRect(x - 1, y - 1, bw + 2, 6);
     fctx.fillStyle = f.hp > 50 ? '#22c55e' : f.hp > 25 ? '#f59e0b' : '#ef4444';
-    fctx.fillRect(x - 13, y - 30, Math.max(0, 26 * f.hp / 100), 3.5);
-    fctx.fillStyle = 'rgba(30,41,59,0.75)'; fctx.font = 'bold 7px Poppins, sans-serif'; fctx.textAlign = 'center';
-    fctx.fillText(p.name, x, y - 33);
+    fctx.fillRect(x, y, Math.max(0, bw * f.hp / 100), 4);
+    fctx.fillStyle = 'rgba(30,41,59,0.85)'; fctx.font = 'bold 9px Poppins, sans-serif'; fctx.textAlign = 'center';
+    fctx.fillText(f.name, Math.round(f.x), y - 3);
   }
 
   function fightTick() {
     fightTime++;
     fctx.clearRect(0, 0, fightW, fightH);
+    // background: langit senja + tanah
     var g = fctx.createLinearGradient(0, 0, 0, fightH);
-    g.addColorStop(0, '#e0e7ff'); g.addColorStop(1, '#fae8ff');
+    g.addColorStop(0, '#c7d2fe'); g.addColorStop(0.6, '#ddd6fe'); g.addColorStop(1, '#fbcfe8');
     fctx.fillStyle = g; fctx.fillRect(0, 0, fightW, fightH);
-    fctx.fillStyle = '#c7d2fe'; fctx.fillRect(0, groundY + 4, fightW, fightH - groundY - 4);
-    fctx.fillStyle = '#818cf8'; fctx.fillRect(0, groundY + 3, fightW, 1.5);
+    fctx.fillStyle = 'rgba(99,102,241,0.25)'; fctx.fillRect(0, groundY + 2, fightW, fightH - groundY - 2);
+    fctx.fillStyle = '#818cf8'; fctx.fillRect(0, groundY + 1, fightW, 2);
+
+    // ---- Penonton: Hinata (kiri atas) & Sakura (kanan atas) ----
+    var bobH = Math.sin(fightTime * 0.06) * 2, bobS = Math.sin(fightTime * 0.06 + 1.5) * 2;
+    drawSprite(MAP_HINATA, COL_HINATA, 55, 92 + bobH, 2.4, 1, false);
+    drawSprite(MAP_SAKURA, COL_SAKURA, fightW - 55, 88 + bobS, 2.4, -1, false);
+    fctx.fillStyle = 'rgba(30,41,59,0.7)'; fctx.font = 'bold 8px Poppins'; fctx.textAlign = 'center';
+    fctx.fillText('Hinata', 55, 100); fctx.fillText('Sakura', fightW - 55, 96);
 
     var fighters = [N, S];
     fighters.forEach(function (f) {
@@ -1310,53 +1334,59 @@
       f.facing = dx > 0 ? 1 : -1;
       f.cooldown = Math.max(0, f.cooldown - 1);
       f.hitFlash = Math.max(0, f.hitFlash - 1);
-      if (Math.abs(dx) > 55) { f.vx = f.facing * 1.15; f.state = 'walk'; }
+      if (Math.abs(dx) > 50) { f.vx = f.facing * 1.6; f.state = 'walk'; }
       else {
-        f.vx *= 0.75; f.state = 'idle';
-        if (f.cooldown === 0 && Math.random() < 0.045) {
-          f.state = 'attack'; f.cooldown = 28;
-          if (Math.abs(dx) < 24) { foe.hp = Math.max(0, foe.hp - 6); foe.hitFlash = 8; foe.vx = f.facing * 2.5; burst(foe.x, foe.y - 10, '#fbbf24', 8); hitTexts.push({ x: foe.x, y: foe.y - 22, life: 35 }); }
+        f.vx *= 0.7; f.state = 'idle';
+        if (f.cooldown === 0 && Math.random() < 0.06) {
+          f.state = 'attack'; f.cooldown = 26;
+          if (Math.abs(dx) < 30) { foe.hp = Math.max(0, foe.hp - 7); foe.hitFlash = 9; foe.vx = f.facing * 3; burst(foe.x, foe.y - 30, '#fbbf24', 10); hitTexts.push({ x: foe.x, y: foe.y - 70, life: 38 }); }
         }
       }
-      if (f.cooldown === 0 && Math.random() < 0.014) { f.state = 'cast'; f.cooldown = 55; castJutsu(f); }
-      if (f.onGround && Math.random() < 0.007) { f.vy = -4.6; f.onGround = false; }
-      f.vy += 0.26; f.x += f.vx; f.y += f.vy;
+      if (f.cooldown === 0 && Math.random() < 0.02) { f.state = 'cast'; f.cooldown = 50; castJutsu(f); }
+      if (f.onGround && Math.random() < 0.01) { f.vy = -6.5; f.onGround = false; }
+      f.vy += 0.32; f.x += f.vx; f.y += f.vy;
       if (f.y >= groundY) { f.y = groundY; f.vy = 0; f.onGround = true; }
-      f.x = Math.max(16, Math.min(fightW - 16, f.x));
-      if (f.hp < 100) f.hp += 0.06;
+      f.x = Math.max(30, Math.min(fightW - 30, f.x));
+      if (f.hp < 100) f.hp += 0.08;
     });
 
+    // ---- Proyektil jurus ----
     for (var i = projectiles.length - 1; i >= 0; i--) {
       var pr = projectiles[i]; pr.x += pr.vx; pr.life--;
-      particles.push({ x: pr.x, y: pr.y, vx: (Math.random() - 0.5) * 0.6, vy: (Math.random() - 0.5) * 0.6, life: 10, color: pr.color, size: 1.5 });
+      for (var t = 0; t < 2; t++) particles.push({ x: pr.x + (Math.random() - 0.5) * 6, y: pr.y + (Math.random() - 0.5) * 6, vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8, life: 12, color: pr.color, size: 2 });
       var tgt = pr.owner === N ? S : N;
-      if (Math.abs(pr.x - tgt.x) < 11 && Math.abs(pr.y - (tgt.y - 10)) < 13) {
-        tgt.hp = Math.max(0, tgt.hp - 13); tgt.hitFlash = 10; tgt.vx = pr.vx * 0.7;
-        burst(pr.x, pr.y, pr.color, 14); hitTexts.push({ x: tgt.x, y: tgt.y - 24, life: 40 }); projectiles.splice(i, 1); continue;
+      if (Math.abs(pr.x - tgt.x) < 18 && Math.abs(pr.y - (tgt.y - 30)) < 30) {
+        tgt.hp = Math.max(0, tgt.hp - 15); tgt.hitFlash = 12; tgt.vx = pr.vx * 0.8;
+        burst(pr.x, pr.y, pr.color, 18); hitTexts.push({ x: tgt.x, y: tgt.y - 75, life: 45 }); projectiles.splice(i, 1); continue;
       }
-      if (pr.life <= 0 || pr.x < -5 || pr.x > fightW + 5) { burst(pr.x, pr.y, pr.color, 8); projectiles.splice(i, 1); continue; }
+      if (pr.life <= 0 || pr.x < -10 || pr.x > fightW + 10) { burst(pr.x, pr.y, pr.color, 10); projectiles.splice(i, 1); continue; }
       fctx.fillStyle = pr.color; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r, 0, Math.PI * 2); fctx.fill();
-      fctx.fillStyle = 'rgba(255,255,255,0.85)'; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r * 0.4, 0, Math.PI * 2); fctx.fill();
+      fctx.fillStyle = 'rgba(255,255,255,0.9)'; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r * 0.45, 0, Math.PI * 2); fctx.fill();
     }
+    // ---- Partikel ----
     for (var j = particles.length - 1; j >= 0; j--) {
-      var pt = particles[j]; pt.x += pt.vx; pt.y += pt.vy; pt.vy += 0.07; pt.life--;
+      var pt = particles[j]; pt.x += pt.vx; pt.y += pt.vy; pt.vy += 0.08; pt.life--;
       if (pt.life <= 0) { particles.splice(j, 1); continue; }
-      fctx.globalAlpha = Math.min(1, pt.life / 18); fctx.fillStyle = pt.color; fctx.fillRect(pt.x, pt.y, pt.size, pt.size); fctx.globalAlpha = 1;
+      fctx.globalAlpha = Math.min(1, pt.life / 20); fctx.fillStyle = pt.color; fctx.fillRect(pt.x, pt.y, pt.size, pt.size); fctx.globalAlpha = 1;
     }
+    // ---- Teks HIT ----
     for (var k = hitTexts.length - 1; k >= 0; k--) {
-      var ht = hitTexts[k]; ht.y -= 0.6; ht.life--;
+      var ht = hitTexts[k]; ht.y -= 0.7; ht.life--;
       if (ht.life <= 0) { hitTexts.splice(k, 1); continue; }
-      fctx.globalAlpha = Math.min(1, ht.life / 30); fctx.fillStyle = '#ef4444'; fctx.font = 'bold 10px Poppins'; fctx.textAlign = 'center';
+      fctx.globalAlpha = Math.min(1, ht.life / 35); fctx.fillStyle = '#ef4444'; fctx.font = 'bold 13px Poppins'; fctx.textAlign = 'center';
       fctx.fillText('HIT!', ht.x, ht.y); fctx.globalAlpha = 1;
     }
-    drawFighter(N); drawFighter(S);
+    // ---- Gambar fighter ----
+    drawSprite(N.map, N.colors, N.x, N.y, U, N.facing, N.hitFlash > 0);
+    drawSprite(S.map, S.colors, S.x, S.y, U, S.facing, S.hitFlash > 0);
+    drawHpBar(N); drawHpBar(S);
     fightRAF = requestAnimationFrame(fightTick);
   }
 
   window.startFight = function () {
     if (!fctx || fightRAF) return;
     resizeFight();
-    S.x = Math.max(80, fightW - 70);
+    S.x = Math.max(90, fightW - 70);
     fightRAF = requestAnimationFrame(fightTick);
   };
   window.stopFight = function () { if (fightRAF) { cancelAnimationFrame(fightRAF); fightRAF = null; } };
