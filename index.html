@@ -792,7 +792,7 @@
       </div>
       <div class="fade-item">
         <div class="flex justify-between text-sm mb-1.5">
-          <span class="font-medium text-slate-700"><i class="fas fa-chart-column text-purple-500 mr-2"></i>Analisis Data (Excel/SQL)</span>
+          <span class="font-medium text-slate-700"><i class="fas fa-chart-column text-purple-500 mr-2"></i>Analisis Data (Excel/SQL/Python)</span>
           <span class="text-xs font-bold text-purple-600">80%</span>
         </div>
         <div class="skill-bar"><div class="skill-fill" style="--skill:80%"></div></div>
@@ -1262,14 +1262,14 @@
   }
 
   // ---- Pixel maps (14 lebar) ---- H=rambut, S=kulit, E=mata, B=headband, M=plat logam, K=hitam, J=baju, P=celana, O=sepatu, C=kerah, W=kumis, R=bandana
-  var MAP_NARUTO = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","BBBBBMMMMBBBBB","..SSSSSSSSSS..","..SESSSSSESS..","..SWWSSSSWWS..","..SSSSSSSSSS..","..KKJJJJJJKK..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..KJJJJJJJJK..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
-  var MAP_SASUKE = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","HHHHHHHHHHHHHH","..SSSSSSSSSS..","..SESSSSSESS..","..SSSSSSSSSS..","..CCCCCCCCCC..","..CCJJJJJJCC..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
-  var MAP_HINATA = [".....HHHH.....","....HHHHHH....","...HHHHHHHH...","..HHHHHHHHHH..","HHHHHHHHHHHHHH","HHSSSSSSSSSSHH","HHSESSSSSESHH","HHSSSSSSSSSSHH","H.HSSSSSSSSH.H","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
-  var MAP_SAKURA = ["....RRRRRR....","...HHHHHHHH...","..HHHHHHHHHH..",".HHHHHHHHHHHH.","..SSSSSSSSSS..","..SESSSSSESS..","..SSSSSSSSSS..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..JJJJJJJJJJ..","..PPPPPPPPPP..","..PPPPPPPPPP..","..PPPP..PPPP..","..OOOO..OOOO.."];
+  var MAP_NARUTO = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..",".BBBBBMMMMMBBBBB..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SWWSSSSSSSSWWS..","..SSSSSSSSSSSSSS..","..KKJJJJJJJJJJKK..","..KJJJJJJJJJJJJJK.","..KJJJJJJJJJJJJJK.","..KJJJJJJJJJJJJJK.","..KKJJJJJJJJJJKK..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..PPPPPP..PPPPPP..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
+  var MAP_SASUKE = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..",".BBBBBMMMMMBBBBB..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SSSSSSSSSSSSSS..","..CCCCCCCCCCCCCC..","..CCJJJJJJJJJJCC..","..CJJJJJJJJJJJJJC.","..WJJJJJJJJJJJJJW.","..CJJJJJJJJJJJJJC.","..CCJJJJJJJJJJCC..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..SSSSSS..SSSSSS..","..OOOOOO..OOOOOO.."];
+  var MAP_HINATA = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..","HHHHHHHHHHHHHHHHHH","HHSSSSSSSSSSSSSSHH","HHSESSSSSSSSSESHH","HHSSSSSSSSSSSSSSHH","H.HSSSSSSSSSSSSH.H","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
+  var MAP_SAKURA = [".....RRRRRRRR.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SSSSSSSSSSSSSS..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
   var COL_NARUTO = {H:'#ffd54f',B:'#1e3a8a',M:'#cbd5e1',S:'#ffcc99',E:'#3b82f6',W:'#d97706',K:'#1f2937',J:'#f97316',P:'#1e40af',O:'#1f2937'};
-  var COL_SASUKE = {H:'#1e1b4b',S:'#ffcc99',E:'#111827',C:'#1e40af',J:'#e5e7eb',P:'#f3f4f6',O:'#1f2937'};
-  var COL_HINATA = {H:'#1e3a8a',S:'#ffcc99',E:'#f8fafc',J:'#c4b5fd',P:'#ddd6fe',O:'#1f2937'};
-  var COL_SAKURA = {R:'#dc2626',H:'#f472b6',S:'#ffcc99',E:'#16a34a',J:'#16a34a',P:'#dc2626',O:'#1f2937'};
+  var COL_SASUKE = {H:'#1e1b4b',B:'#1e3a8a',M:'#cbd5e1',S:'#ffcc99',E:'#111827',C:'#1e40af',J:'#2563eb',W:'#e5e7eb',P:'#f3f4f6',O:'#1e40af'};
+  var COL_HINATA = {H:'#1e3a8a',S:'#ffcc99',E:'#f8fafc',J:'#c4b5fd',P:'#ede9fe',O:'#1f2937'};
+  var COL_SAKURA = {R:'#dc2626',H:'#f472b6',S:'#ffcc99',E:'#16a34a',J:'#dc2626',P:'#ffcc99',O:'#1f2937'};
 
   function drawSprite(map, colors, cx, bottomY, u, flip, flash) {
     var mw = map[0].length, mh = map.length;
@@ -1322,10 +1322,11 @@
 
     // ---- Penonton: Hinata (kiri atas) & Sakura (kanan atas) ----
     var bobH = Math.sin(fightTime * 0.06) * 2, bobS = Math.sin(fightTime * 0.06 + 1.5) * 2;
-    drawSprite(MAP_HINATA, COL_HINATA, 55, 92 + bobH, 2.4, 1, false);
-    drawSprite(MAP_SAKURA, COL_SAKURA, fightW - 55, 88 + bobS, 2.4, -1, false);
-    fctx.fillStyle = 'rgba(30,41,59,0.7)'; fctx.font = 'bold 8px Poppins'; fctx.textAlign = 'center';
-    fctx.fillText('Hinata', 55, 100); fctx.fillText('Sakura', fightW - 55, 96);
+    var specY = Math.min(190, groundY - 90); // di bawah judul "Kontak Saya", tidak tertimpa
+    drawSprite(MAP_HINATA, COL_HINATA, 60, specY + bobH, 2.6, 1, false);
+    drawSprite(MAP_SAKURA, COL_SAKURA, fightW - 60, specY + 8 + bobS, 2.6, -1, false);
+    fctx.fillStyle = 'rgba(30,41,59,0.75)'; fctx.font = 'bold 9px Poppins'; fctx.textAlign = 'center';
+    fctx.fillText('Hinata', 60, specY + 10); fctx.fillText('Sakura', fightW - 60, specY + 18);
 
     var fighters = [N, S];
     fighters.forEach(function (f) {
