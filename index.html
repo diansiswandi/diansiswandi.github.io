@@ -544,13 +544,6 @@
   /* Blokir seleksi teks di seluruh halaman (kecuali input form) */
   body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
   input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
-  /* ===== Pixel Naruto vs Sasuke (RINGAN: SVG inline + animasi transform saja, tanpa gambar) ===== */
-  .pixel-watchers { display: inline-flex; gap: 8px; align-items: flex-end; margin-left: 10px; vertical-align: bottom; pointer-events: none; }
-  .watcher-bob { animation: bob 2.6s ease-in-out infinite; }
-  .watcher-bob.delay { animation-delay: -1.3s; }
-  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  /* Sembunyikan SVG watcher lama (digambar di canvas, lebih besar & mirip anime) */
-  .pixel-watchers, .pixel-fight, .pixel-sprite { display: none !important; }
   /* ===== Canvas Pixel Fight FULL-PAGE (di belakang form, kartu semi-transparan) ===== */
   .book-content[data-page="7"] { position: relative; }
   #fightCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; border-radius: 12px; pointer-events: none; }
@@ -880,12 +873,7 @@
 
   <!-- ===== HALAMAN 8: KONTAK ===== -->
   <section class="book-content" data-page="7">
-    <h2 class="page-title fade-item">Kontak Saya<span class="pixel-watchers" aria-hidden="true">
-      <!-- Hinata (berdiri) -->
-      <span class="watcher-bob"><svg viewBox="0 0 12 16" width="20" height="27" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="6" fill="#1a237e"/><rect x="2" y="2" width="1" height="6" fill="#1a237e"/><rect x="9" y="2" width="1" height="6" fill="#1a237e"/><rect x="4" y="2" width="4" height="3" fill="#ffcc99"/><rect x="5" y="3" width="1" height="1" fill="#fff"/><rect x="6" y="3" width="1" height="1" fill="#fff"/><rect x="3" y="6" width="6" height="5" fill="#ce93d8"/><rect x="5" y="6" width="2" height="5" fill="#f3e5f5"/><rect x="3" y="11" width="2" height="4" fill="#4527a0"/><rect x="7" y="11" width="2" height="4" fill="#4527a0"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></span>
-      <!-- Sakura (duduk) -->
-      <span class="watcher-bob delay"><svg viewBox="0 0 12 12" width="20" height="20" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#f48fb1"/><rect x="2" y="1" width="1" height="2" fill="#f48fb1"/><rect x="9" y="1" width="1" height="2" fill="#f48fb1"/><rect x="3" y="1" width="6" height="1" fill="#c2185b"/><rect x="3" y="2" width="6" height="3" fill="#ffcc99"/><rect x="4" y="3" width="1" height="1" fill="#2d3436"/><rect x="7" y="3" width="1" height="1" fill="#2d3436"/><rect x="3" y="5" width="6" height="4" fill="#e53935"/><rect x="5" y="5" width="2" height="4" fill="#ffcdd2"/><rect x="2" y="9" width="8" height="2" fill="#43a047"/><rect x="2" y="11" width="8" height="1" fill="#2d3436"/></svg></span>
-    </span></h2>
+    <h2 class="page-title fade-item">Kontak Saya</h2>
     <!-- Arena pertarungan pixel Naruto vs Sasuke (JS Canvas, full-width) -->
     <canvas id="fightCanvas" aria-hidden="true"></canvas>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -909,11 +897,6 @@
         </div>
       </div>
       <form class="fade-item space-y-3 relative" onsubmit="sendMessage(event)" novalidate>
-        <!-- Naruto vs Sasuke kejar-kejaran di atas kolom form (SVG pixel ringan) -->
-        <div class="pixel-fight" aria-hidden="true">
-          <div class="pixel-sprite sprite-naruto"><svg viewBox="0 0 12 16" width="22" height="30" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="2" fill="#ffd54f"/><rect x="2" y="1" width="1" height="2" fill="#ffd54f"/><rect x="9" y="1" width="1" height="2" fill="#ffd54f"/><rect x="4" y="0" width="1" height="1" fill="#ffd54f"/><rect x="7" y="0" width="1" height="1" fill="#ffd54f"/><rect x="3" y="2" width="6" height="1" fill="#2d3436"/><rect x="5" y="2" width="2" height="1" fill="#b2bec3"/><rect x="3" y="3" width="6" height="3" fill="#ffcc99"/><rect x="4" y="4" width="1" height="1" fill="#2d3436"/><rect x="7" y="4" width="1" height="1" fill="#2d3436"/><rect x="3" y="6" width="6" height="5" fill="#ff9800"/><rect x="5" y="6" width="2" height="5" fill="#fff3e0"/><rect x="2" y="6" width="1" height="4" fill="#ff9800"/><rect x="9" y="6" width="1" height="4" fill="#ff9800"/><rect x="3" y="11" width="2" height="4" fill="#1a237e"/><rect x="7" y="11" width="2" height="4" fill="#1a237e"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></div>
-          <div class="pixel-sprite sprite-sasuke"><svg viewBox="0 0 12 16" width="22" height="30" shape-rendering="crispEdges"><rect x="3" y="0" width="6" height="3" fill="#1a237e"/><rect x="2" y="1" width="1" height="3" fill="#1a237e"/><rect x="9" y="1" width="1" height="3" fill="#1a237e"/><rect x="4" y="0" width="1" height="1" fill="#1a237e"/><rect x="7" y="0" width="1" height="1" fill="#1a237e"/><rect x="3" y="3" width="6" height="3" fill="#ffcc99"/><rect x="4" y="4" width="1" height="1" fill="#000"/><rect x="7" y="4" width="1" height="1" fill="#000"/><rect x="3" y="6" width="6" height="1" fill="#3949ab"/><rect x="3" y="7" width="6" height="4" fill="#eceff1"/><rect x="5" y="7" width="2" height="4" fill="#3949ab"/><rect x="2" y="7" width="1" height="4" fill="#eceff1"/><rect x="9" y="7" width="1" height="4" fill="#eceff1"/><rect x="3" y="11" width="2" height="4" fill="#eceff1"/><rect x="7" y="11" width="2" height="4" fill="#eceff1"/><rect x="3" y="15" width="2" height="1" fill="#2d3436"/><rect x="7" y="15" width="2" height="1" fill="#2d3436"/></svg></div>
-        </div>
         <!-- Honeypot: field tersembunyi sebagai jebakan bot spam -->
         <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off" />
         <div>
@@ -1243,158 +1226,350 @@
     if (e.metaKey && ['u', 's'].indexOf(key) !== -1) { e.preventDefault(); showWarn(); return false; }
   });
 
-  /* ================= PIXEL FIGHT ENGINE v2 (Canvas + JS, sprite detail mirip anime) ================= */
-  var fightCanvas = document.getElementById('fightCanvas');
-  var fctx = fightCanvas ? fightCanvas.getContext('2d') : null;
-  var fightRAF = null, fightW = 600, fightH = 400, groundY = 390, fightTime = 0;
-  var projectiles = [], particles = [], hitTexts = [];
-  var U = 3; // ukuran pixel fighter (besar)
+  updateIndicator(0);
+})();
+</script>
 
-  function resizeFight() {
-    if (!fightCanvas) return;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    fightW = fightCanvas.offsetWidth || 600;
-    fightH = fightCanvas.offsetHeight || 400;
-    groundY = fightH - 12;
-    fightCanvas.width = fightW * dpr;
-    fightCanvas.height = fightH * dpr;
-    fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+<script>
+/* ===== PIXEL FIGHT ENGINE v3 — halaman Kontak =====
+   Naruto & Sasuke kejar-kejaran + jutsu di latar belakang (semi-transparan); Sakura & Hinata menonton dengan cemas.
+   Kepala = pixel-art setengah-peta (dicerminkan). Badan = "paper doll" dari garis pixel, jadi pose mudah dianimasikan. */
+(function () {
+  var cv = document.getElementById('fightCanvas'), ctx = cv ? cv.getContext('2d') : null;
+  if (!ctx) return;
+  var W = 600, H = 400, GY = 388, U = 3, KS = 1, T = 0, raf = null, want = false, gasp = 0, roleT = 0, STY = 66, AL = 0.62;
+  var FX = [], PJ = [], CL = [], BUB = [], G = { x: 0, y: 0, f: 1 }, N, S, HN, SK, chaser;
+  var LN = { h: ['N-Naruto-kun...', 'A-aduh... bahaya...', 'Hati-hati, Naruto-kun'], k: ['Sasuke-kun!', 'Hentikan, kalian berdua!', 'Jangan sampai terluka...'] };
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function sgn(v) { return v < 0 ? -1 : 1; }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function say(c, t) { if (!BUB.length) BUB.push({ c: c, t: t, life: 130 }); }
+
+  /* ---------- Data karakter (ciri khas anime) ----------
+     n = Naruto: rambut kuning jabrik, ikat kepala biru + plat, 3 kumis di pipi, jaket oranye
+     s = Sasuke: rambut hitam-biru berponi panjang, ikat kepala navy, baju biru berkerah tinggi, celana putih, mata Sharingan
+     k = Sakura: rambut pink pendek, dahi lebar, pita merah, mata hijau, baju merah berlogo lingkaran putih
+     h = Hinata: rambut indigo poni lurus (hime), mata lavender, jaket lavender, ikat kepala di leher, pipi merona */
+  var DEF = {
+    n: { skin: '#ffd3ad', iris: '#2f7bff', top: '#ff8c1a', shade: '#d96b00', dark: '#1f2438', sleeve: '#ff8c1a', sl: 99, pants: '#ff8c1a', legc: '#ff8c1a', pk: 99, wrap: '#f2f2f2', shoe: '#27356e',
+      pal: { Y: '#ffd23f', y: '#e6a800', B: '#2f55c4', b: '#1d3a8f', M: '#cfd8e6', m: '#6c7a92', S: '#ffd3ad', s: '#b8693a', W: '#ffffff' },
+      head: ['...Y...Y', '..YY..YY', '.YYYYYYY', 'YYYYYyYY', 'YYYYYYYY', 'YYbBBBBB', 'YYBBMMMM', 'YYBBMmmM', '.YssWWWS', '.YSSWWWS', '..ssSSSS', '..SSSSSS', '..ssSSSS', '....SSSS'] },
+    s: { skin: '#f7d9bf', iris: '#15151f', top: '#2c4aa3', shade: '#1f3478', sleeve: '#2c4aa3', sl: 2, pants: '#dfe4f1', legc: '#f7d9bf', pk: 1, wrap: '#dfe4f1', shoe: '#1f2f6b',
+      pal: { H: '#171a2e', h: '#3b4a8f', B: '#27408f', b: '#14214f', M: '#cfd8e6', m: '#6c7a92', S: '#f7d9bf', W: '#ffffff' },
+      head: ['...H..HH', '..HHHHHH', '.HHHHhHH', 'HHHHHHHH', 'HHHhHHHH', '.HHbBBBB', '.HHBBMMM', '.HHBBMmM', '.HHSWWWS', '.HHSWWWS', '.HHSSSSS', '..HSSSSS', '..HSSSSS', '....SSSS'] },
+    k: { skin: '#fbdcc4', iris: '#25b86a', top: '#e53147', shade: '#b81e34', sleeve: '#fbdcc4', sl: 0, pants: '#a9d89b', legc: '#fbdcc4', pk: 1, wrap: null, shoe: '#2b3c7e',
+      pal: { P: '#ff9ec0', p: '#e8719c', R: '#e2263b', S: '#fbdcc4', W: '#ffffff' },
+      head: ['...PPPPP', '..PPPPPP', '.PPPPpPP', '.PRRRRRR', 'PPPPPPPP', 'PPPPPPSS', 'PPPPPSSS', '.PPPSSSS', '.PPSWWWS', '.PPSWWWS', '.PPSSSSS', '.PPSSSSS', 'PPPSSSSS', '....SSSS'] },
+    h: { skin: '#fbe3d2', iris: '#a99de6', top: '#c3b8f0', shade: '#9b8fd6', sleeve: '#c3b8f0', sl: 99, pants: '#3d4c8f', legc: '#3d4c8f', pk: 99, wrap: null, shoe: '#262b52',
+      pal: { H: '#2b3677', h: '#4658b0', S: '#fbe3d2', W: '#f1eeff' },
+      head: ['...HHHHH', '..HHHHhH', '.HHHHHHH', '.HHHHHHH', 'HHHHhHHH', 'HHHHHHHH', 'HHHHHHHS', 'HHHHHSSS', 'HHSSWWWS', 'HHSSWWWS', 'HHSSSSSS', 'HHSSSSSS', '.HSSSSSS', '.H..SSSS'] }
+  };
+  for (var id in DEF) DEF[id].rows = DEF[id].head.map(function (r) { return r + r.split('').reverse().join(''); });
+
+  /* ---------- Menggambar sprite (grid pixel logis, titik 0,0 = tengah kaki) ---------- */
+  function R(x, y, w, h, c) {
+    ctx.fillStyle = c;
+    ctx.fillRect(Math.round(G.x + (G.f > 0 ? x : -x - w) * U), Math.round(G.y + y * U), w * U, h * U);
   }
-
-  // ---- Pixel maps (14 lebar) ---- H=rambut, S=kulit, E=mata, B=headband, M=plat logam, K=hitam, J=baju, P=celana, O=sepatu, C=kerah, W=kumis, R=bandana
-  var MAP_NARUTO = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..",".BBBBBMMMMMBBBBB..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SWWSSSSSSSSWWS..","..SSSSSSSSSSSSSS..","..KKJJJJJJJJJJKK..","..KJJJJJJJJJJJJJK.","..KJJJJJJJJJJJJJK.","..KJJJJJJJJJJJJJK.","..KKJJJJJJJJJJKK..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..PPPPPP..PPPPPP..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
-  var MAP_SASUKE = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..",".BBBBBMMMMMBBBBB..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SSSSSSSSSSSSSS..","..CCCCCCCCCCCCCC..","..CCJJJJJJJJJJCC..","..CJJJJJJJJJJJJJC.","..WJJJJJJJJJJJJJW.","..CJJJJJJJJJJJJJC.","..CCJJJJJJJJJJCC..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..SSSSSS..SSSSSS..","..OOOOOO..OOOOOO.."];
-  var MAP_HINATA = ["......HHHHHH......",".....HHHHHHHH.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..","HHHHHHHHHHHHHHHHHH","HHSSSSSSSSSSSSSSHH","HHSESSSSSSSSSESHH","HHSSSSSSSSSSSSSSHH","H.HSSSSSSSSSSSSH.H","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..PPPPPPPPPPPPPP..","..PPPPPPPPPPPPPP..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
-  var MAP_SAKURA = [".....RRRRRRRR.....","....HHHHHHHHHH....","...HHHHHHHHHHHH...","..HHHHHHHHHHHHHH..","..SSSSSSSSSSSSSS..","..SESSSSSSSSSESS..","..SSSSSSSSSSSSSS..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..JJJJJJJJJJJJJJ..","..PPPPPP..PPPPPP..","..OOOOOO..OOOOOO.."];
-  var COL_NARUTO = {H:'#ffd54f',B:'#1e3a8a',M:'#cbd5e1',S:'#ffcc99',E:'#3b82f6',W:'#d97706',K:'#1f2937',J:'#f97316',P:'#1e40af',O:'#1f2937'};
-  var COL_SASUKE = {H:'#1e1b4b',B:'#1e3a8a',M:'#cbd5e1',S:'#ffcc99',E:'#111827',C:'#1e40af',J:'#2563eb',W:'#e5e7eb',P:'#f3f4f6',O:'#1e40af'};
-  var COL_HINATA = {H:'#1e3a8a',S:'#ffcc99',E:'#f8fafc',J:'#c4b5fd',P:'#ede9fe',O:'#1f2937'};
-  var COL_SAKURA = {R:'#dc2626',H:'#f472b6',S:'#ffcc99',E:'#16a34a',J:'#dc2626',P:'#ffcc99',O:'#1f2937'};
-
-  function drawSprite(map, colors, cx, bottomY, u, flip, flash) {
-    var mw = map[0].length, mh = map.length;
-    for (var r = 0; r < mh; r++) {
-      for (var c = 0; c < mw; c++) {
-        var ch = map[r][c];
-        if (ch === '.') continue;
-        var col = flip ? (mw - 1 - c) : c;
-        fctx.fillStyle = flash ? '#ffffff' : (colors[ch] || '#ff00ff');
-        fctx.fillRect(Math.round(cx + (col - mw / 2) * u), Math.round(bottomY - (mh - r) * u), u, u);
+  function limb(x0, y0, x1, y1, t, c1, c2, k) {
+    var n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) || 1;
+    for (var i = 0; i <= n; i++) R(Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), t, t, i < k ? c1 : c2);
+  }
+  function head(d, ox) {
+    for (var r = 0, row, x, w, ch; r < 14; r++) {
+      row = d.rows[r]; x = 0;
+      while (x < 16) {
+        ch = row.charAt(x); w = 1;
+        while (x + w < 16 && row.charAt(x + w) === ch) w++;
+        if (ch !== '.') R(ox + x, -28 + r, w, 1, d.pal[ch]);
+        x += w;
       }
     }
   }
-
-  function makeFighter(x, facing, map, colors, name, jutsuColor) {
-    return { x: x, y: groundY, vx: 0, vy: 0, hp: 100, facing: facing, state: 'idle',
-             cooldown: 0, hitFlash: 0, onGround: true, map: map, colors: colors, name: name, jutsuColor: jutsuColor };
+  function torso(id, d, o) {
+    R(-4 + o, -14, 8, 8, d.top);
+    if (id === 'n') { R(-4 + o, -14, 1, 8, d.dark); R(3 + o, -14, 1, 8, d.dark); R(-3 + o, -14, 6, 1, d.dark); R(o, -13, 1, 6, d.shade); R(-4 + o, -7, 8, 1, d.shade); }
+    else if (id === 's') { R(-4 + o, -14, 8, 2, d.shade); R(-4 + o, -9, 8, 1, '#c9cfe0'); R(-4 + o, -8, 8, 2, '#dfe4f1'); }
+    else if (id === 'k') { R(-4 + o, -14, 8, 1, '#f7e6b8'); R(-1 + o, -11, 2, 2, '#ffffff'); R(-4 + o, -8, 8, 2, '#a9d89b'); }
+    else { R(-3 + o, -14, 6, 1, '#2d3a7a'); R(-1 + o, -14, 2, 1, '#cfd8e6'); R(-4 + o, -13, 8, 1, '#ffffff'); R(-1 + o, -12, 2, 5, '#3a4a8f'); }
   }
-  var N = makeFighter(70, 1, MAP_NARUTO, COL_NARUTO, 'Naruto', '#38bdf8');
-  var S = makeFighter(530, -1, MAP_SASUKE, COL_SASUKE, 'Sasuke', '#e0f2fe');
+  function face(id, d, p, o) {
+    var K = '#3a1f1a', m = p.mouth, lk = p.look, ic = p.iris || d.iris;
+    if (p.closed) { R(-4 + o, -20, 3, 2, d.skin); R(1 + o, -20, 3, 2, d.skin); R(-4 + o, -19, 3, 1, K); R(1 + o, -19, 3, 1, K); }
+    else { R(-3 + lk + o, -20, 1, 2, ic); R(2 + lk + o, -20, 1, 2, ic); }
+    if (m === 'grin') { R(-3 + o, -17, 6, 1, K); R(-2 + o, -16, 4, 1, '#ffffff'); }
+    else if (m === 'smirk') { R(-2 + o, -16, 3, 1, K); R(1 + o, -17, 1, 1, K); }
+    else if (m === 'open') R(-2 + o, -17, 4, 2, '#7a2e3a');
+    else if (m === 'o') R(-1 + o, -17, 2, 2, '#7a2e3a');
+    else if (m === 'worry') { R(-2 + o, -16, 1, 1, K); R(-1 + o, -17, 2, 1, K); R(1 + o, -16, 1, 1, K); }
+    else R(-2 + o, -16, 4, 1, K);
+    if (id === 'h') { R(-5 + o, -18, 2, 1, '#ff9eb0'); R(3 + o, -18, 2, 1, '#ff9eb0'); }   // pipi merona
+  }
+  function arm(d, sx, h, o) { limb(sx, -14, h[0] + o, h[1], 2, d.sleeve, d.skin, d.sl); R(h[0] + o, h[1], 2, 2, d.skin); }
+  function leg(d, ax, f) { limb(ax, -7, f[0], f[1], 3, d.pants, d.legc, d.pk); if (d.wrap) R(f[0], f[1], 3, 1, d.wrap); R(f[0], f[1] + 1, 4, 2, d.shoe); }
+  function drawChar(c, p, al) {
+    var d = DEF[c.id], o = p.lean || 0;
+    G.x = Math.round(c.x / U) * U; G.y = Math.round(c.y / U) * U + (p.bob || 0) * U; G.f = c.face;
+    ctx.globalAlpha = al;
+    if (c.id === 'h') { R(-8 + o, -14, 2, 6, d.pal.H); R(6 + o, -14, 2, 6, d.pal.H); }   // rambut panjang Hinata
+    if (!p.up) arm(d, -6 + o, p.lh, o);
+    leg(d, -4, p.lf); leg(d, 1, p.rf);
+    torso(c.id, d, o);
+    head(d, -8 + o);
+    face(c.id, d, p, o);
+    if (p.up) arm(d, -6 + o, p.lh, o);
+    arm(d, 4 + o, p.rh, o);
+    c.hx = G.x + G.f * (p.rh[0] + o + 1) * U; c.hy = G.y + (p.rh[1] + 1) * U;   // posisi tangan depan (untuk efek jutsu)
+  }
 
-  function burst(x, y, color, n) {
-    for (var i = 0; i < (n || 12); i++) {
-      var a = Math.random() * Math.PI * 2, sp = Math.random() * 3 + 0.5;
-      particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.5, life: 24 + Math.random() * 18, color: color, size: 2 + Math.random() * 2.5 });
+  /* ---------- Pose ---------- */
+  function poseOf(c, foe) {
+    var m = c.air && (c.mode === 'run' || c.mode === 'idle') ? 'air' : c.mode, s = Math.sin(T * 0.42 + c.ph), rise = c.vy < 0,
+      p = { lh: [-6, -8], rh: [4, -8], lf: [-4, -3], rf: [1, -3], bob: 0, lean: 0, up: 0, mouth: c.id === 'n' ? 'grin' : 'smirk', look: c.face === sgn(foe.x - c.x) ? 1 : -1 };
+    if (m === 'idle') p.bob = Math.sin(T * 0.1 + c.ph) > 0.4 ? -1 : 0;
+    else if (m === 'run') {
+      p.lean = 1; p.bob = Math.abs(s) > 0.7 ? -1 : 0;
+      p.lf = [-4 + Math.round(s * 4), s > 0.3 ? -5 : -3]; p.rf = [1 - Math.round(s * 4), s < -0.3 ? -5 : -3];
+      p.lh = [-5 - Math.round(s * 3), -9]; p.rh = [3 + Math.round(s * 3), -9];
+    }
+    else if (m === 'air') { p.lean = 1; p.lf = [-3, -5]; p.rf = [2, -6]; p.lh = [-7, rise ? -13 : -9]; p.rh = [5, rise ? -14 : -10]; }
+    else if (m === 'dash') { p.lean = 3; p.lf = [-10, -6]; p.rf = [-6, -4]; p.lh = [-8, -12]; p.rh = [11, -12]; p.mouth = 'open'; }
+    else if (m === 'throw') { p.lean = 1; p.lf = [-6, -3]; p.rf = [3, -3]; p.lh = [-6, -9]; p.rh = c.mt > 10 ? [-2, -17] : [10, -16]; }
+    else if (m === 'seal') { p.up = 1; p.lf = [-6, -3]; p.rf = [3, -3]; p.lh = [0, -13]; p.rh = [2, -14]; p.lean = c.mt > 10 ? -1 : 2; p.mouth = c.mt > 10 ? 'flat' : 'open'; }
+    else if (m === 'hurt') { p.lean = -2; p.lf = [-7, -3]; p.rf = [-2, -5]; p.lh = [-9, -14]; p.rh = [7, -5]; p.closed = 1; p.mouth = 'flat'; }
+    if (c.id === 's' && (m === 'dash' || m === 'seal' || m === 'throw')) p.iris = '#e11d2e';   // Sharingan menyala
+    return p;
+  }
+  // Penonton: Sakura gemetar menggenggam tangan di dada, Hinata memainkan jari telunjuk; keduanya menutup mulut saat kaget
+  function watchPose(c, tg) {
+    var k = c.id === 'k', d = Math.sin(T * 0.09) > 0 ? 1 : 0,
+      p = { lh: [-2, -11], rh: [0, -11], lf: [-3, -3], rf: [0, -3], bob: 0, lean: 0, up: 1, mouth: 'worry', look: 0 };
+    p.look = Math.max(-1, Math.min(1, Math.round((tg.x - c.x) / 90))) * c.face;
+    if (k) p.bob = T % 16 < 2 ? 1 : 0;
+    else { p.lh = [-2 - d, -9]; p.rh = [d, -9]; p.lean = Math.round(Math.sin(T * 0.04)); }
+    if (gasp > 0) { p.lh = [-2, -17]; p.rh = [0, -17]; p.mouth = 'o'; }
+    return p;
+  }
+
+  /* ---------- Efek ---------- */
+  function spark(x, y, c, n) { for (var i = 0, a, v; i < n; i++) { a = rnd(0, 6.28); v = rnd(1, 4.5) * KS; FX.push({ k: 'p', x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - KS, life: 0, max: Math.round(rnd(16, 34)), c: c, s: U, g: 0.1 * KS }); } }
+  function puff(x, y, n) { for (var i = 0; i < n; i++) FX.push({ k: 'p', x: x + rnd(-6, 6) * KS, y: y + rnd(-6, 6) * KS, vx: rnd(-1.6, 1.6) * KS, vy: rnd(-1.6, 0.6) * KS, life: 0, max: Math.round(rnd(22, 38)), c: Math.random() < 0.5 ? '#f4f6fb' : '#c3c9d8', s: U * 2, g: -0.01 }); }
+  function ring(x, y, c, v) { FX.push({ k: 'r', x: x, y: y, r: 4 * U, vr: (v || 3.2) * KS, life: 0, max: 20, c: c }); }
+  function disc(cx, cy, r, c) {
+    ctx.fillStyle = c;
+    for (var j = -r; j <= r; j++) for (var i = -r; i <= r; i++) if (i * i + j * j <= r * r + r * 0.5) ctx.fillRect(Math.round(cx + i * U - U / 2), Math.round(cy + j * U - U / 2), U, U);
+  }
+  function rasengan(x, y) {   // bola chakra biru Naruto
+    ctx.globalAlpha = 0.85; disc(x, y, 5, '#58b6ff'); disc(x, y, 4, '#a8dcff'); disc(x, y, 2, '#ffffff');
+    ctx.fillStyle = '#2e7de0';
+    for (var k = 0, a; k < 4; k++) { a = T * 0.55 + k * 1.57; ctx.fillRect(Math.round(x + Math.cos(a) * 3.4 * U), Math.round(y + Math.sin(a) * 3.4 * U), U, U); }
+  }
+  function chidori(x, y) {    // petir di tangan Sasuke
+    ctx.globalAlpha = 0.4; disc(x, y, 4, '#8fb8ff'); ctx.globalAlpha = 0.9; disc(x, y, 1, '#ffffff');
+    for (var k = 0, a, px, py, s; k < 7; k++) {
+      a = rnd(0, 6.28); px = x; py = y;
+      for (s = 0; s < 7; s++) { a += rnd(-0.8, 0.8); px += Math.cos(a) * 1.4 * U; py += Math.sin(a) * 1.4 * U; ctx.fillStyle = s % 2 ? '#7fb2ff' : '#eaf4ff'; ctx.fillRect(Math.round(px), Math.round(py), U, U); }
     }
   }
-  function castJutsu(f) {
-    projectiles.push({ x: f.x + f.facing * 16, y: f.y - 34, vx: f.facing * 3.4, owner: f, color: f.jutsuColor, r: f === N ? 8 : 7, life: 160 });
-    burst(f.x + f.facing * 16, f.y - 34, f.jutsuColor, 7);
+  function drawSh(p) {
+    var pts = (T >> 1) % 2 ? [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [2, 0], [-2, 0], [0, 2], [0, -2]] : [[0, 0], [1, 1], [-1, -1], [1, -1], [-1, 1], [2, 2], [-2, -2], [2, -2], [-2, 2]];
+    ctx.globalAlpha = 0.9;
+    for (var i = 0; i < pts.length; i++) { ctx.fillStyle = i ? '#d5dde8' : '#5b6779'; ctx.fillRect(Math.round(p.x + pts[i][0] * U - U / 2), Math.round(p.y + pts[i][1] * U - U / 2), U, U); }
   }
-  function drawHpBar(f, w) {
-    var bw = 44, x = Math.round(f.x - bw / 2), y = Math.round(f.y - 20 * U - 14);
-    fctx.fillStyle = 'rgba(15,23,42,0.35)'; fctx.fillRect(x - 1, y - 1, bw + 2, 6);
-    fctx.fillStyle = f.hp > 50 ? '#22c55e' : f.hp > 25 ? '#f59e0b' : '#ef4444';
-    fctx.fillRect(x, y, Math.max(0, bw * f.hp / 100), 4);
-    fctx.fillStyle = 'rgba(30,41,59,0.85)'; fctx.font = 'bold 9px Poppins, sans-serif'; fctx.textAlign = 'center';
-    fctx.fillText(f.name, Math.round(f.x), y - 3);
+  function drawLog(x, y) {    // kayu pengganti (kawarimi)
+    var x0 = Math.round(x - 3 * U), y0 = Math.round(y - 12 * U);
+    ctx.fillStyle = '#8a5a2b'; ctx.fillRect(x0, y0, 6 * U, 12 * U);
+    ctx.fillStyle = '#6b4423'; ctx.fillRect(x0 + U, y0 + 2 * U, U, 10 * U); ctx.fillRect(x0 + 4 * U, y0 + 2 * U, U, 10 * U);
+    ctx.fillStyle = '#d9a566'; ctx.fillRect(x0, y0, 6 * U, 2 * U); ctx.fillStyle = '#b07a3c'; ctx.fillRect(x0 + 2 * U, y0 + U, 2 * U, U);
   }
 
-  function fightTick() {
-    fightTime++;
-    fctx.clearRect(0, 0, fightW, fightH);
-    // background: langit senja + tanah
-    var g = fctx.createLinearGradient(0, 0, 0, fightH);
-    g.addColorStop(0, '#c7d2fe'); g.addColorStop(0.6, '#ddd6fe'); g.addColorStop(1, '#fbcfe8');
-    fctx.fillStyle = g; fctx.fillRect(0, 0, fightW, fightH);
-    fctx.fillStyle = 'rgba(99,102,241,0.25)'; fctx.fillRect(0, groundY + 2, fightW, fightH - groundY - 2);
-    fctx.fillStyle = '#818cf8'; fctx.fillRect(0, groundY + 1, fightW, 2);
-
-    // ---- Penonton: Hinata (kiri atas) & Sakura (kanan atas) ----
-    var bobH = Math.sin(fightTime * 0.06) * 2, bobS = Math.sin(fightTime * 0.06 + 1.5) * 2;
-    var specY = Math.min(190, groundY - 90); // di bawah judul "Kontak Saya", tidak tertimpa
-    drawSprite(MAP_HINATA, COL_HINATA, 60, specY + bobH, 2.6, 1, false);
-    drawSprite(MAP_SAKURA, COL_SAKURA, fightW - 60, specY + 8 + bobS, 2.6, -1, false);
-    fctx.fillStyle = 'rgba(30,41,59,0.75)'; fctx.font = 'bold 9px Poppins'; fctx.textAlign = 'center';
-    fctx.fillText('Hinata', 60, specY + 10); fctx.fillText('Sakura', fightW - 60, specY + 18);
-
-    var fighters = [N, S];
-    fighters.forEach(function (f) {
-      var foe = f === N ? S : N;
-      var dx = foe.x - f.x;
-      f.facing = dx > 0 ? 1 : -1;
-      f.cooldown = Math.max(0, f.cooldown - 1);
-      f.hitFlash = Math.max(0, f.hitFlash - 1);
-      if (Math.abs(dx) > 50) { f.vx = f.facing * 1.6; f.state = 'walk'; }
-      else {
-        f.vx *= 0.7; f.state = 'idle';
-        if (f.cooldown === 0 && Math.random() < 0.06) {
-          f.state = 'attack'; f.cooldown = 26;
-          if (Math.abs(dx) < 30) { foe.hp = Math.max(0, foe.hp - 7); foe.hitFlash = 9; foe.vx = f.facing * 3; burst(foe.x, foe.y - 30, '#fbbf24', 10); hitTexts.push({ x: foe.x, y: foe.y - 70, life: 38 }); }
+  /* ---------- Logika pertarungan ---------- */
+  function mk(id, x, face) { return { id: id, x: x, y: GY, vx: 0, vy: 0, face: face, mode: 'idle', mt: 0, cd: Math.round(rnd(30, 90)), sub: 0, ph: rnd(0, 6), air: false, kind: '', hx: 0, hy: 0 }; }
+  function jump(f, v) { f.vy = -v * KS; f.air = true; }
+  function kawarimi(v, a) {   // jurus pergantian tubuh: kayu + asap, lalu muncul di tempat lain
+    FX.push({ k: 'l', x: v.x, y: v.y, vy: 0, life: 0, max: 30 }); puff(v.x, v.y - 12 * U, 12);
+    var s = Math.random() < 0.5 ? -1 : 1, nx = a.x + s * rnd(200, 360) * KS;
+    if (nx < 40 || nx > W - 40) nx = a.x - s * rnd(200, 360) * KS;
+    v.x = Math.max(40, Math.min(W - 40, nx)); v.y = GY - rnd(0, Math.min(H * 0.45, 240)) * KS;
+    v.vx = 0; v.vy = 0; v.mode = 'idle'; v.sub = 100; v.cd = 25; v.air = true; puff(v.x, v.y - 12 * U, 10);
+  }
+  function hit(v, a) {
+    if (!v.sub && Math.random() < 0.7) kawarimi(v, a);
+    else { v.mode = 'hurt'; v.mt = 28; v.vx = a.face * 5.5 * KS; v.vy = -4.5 * KS; spark(v.x, v.y - 14 * U, '#ffe066', 12); ring(v.x, v.y - 14 * U, '#ffffff'); }
+    gasp = 80;
+    if (Math.random() < 0.6) say(v.id === 'n' ? HN : SK, v.id === 'n' ? 'Naruto-kun!' : 'Sasuke-kun!!');
+  }
+  function clash(a, b) {      // Rasengan vs Chidori bertabrakan
+    var x = (a.x + b.x) / 2, y = (a.y + b.y) / 2 - 14 * U, w = Math.random() < 0.5;
+    ring(x, y, '#ffffff'); ring(x, y, '#7fc4ff', 4.6); spark(x, y, '#ffffff', 22); spark(x, y, '#58b6ff', 16);
+    [a, b].forEach(function (f) { f.mode = 'hurt'; f.mt = 30; f.vx = -f.face * 6.5 * KS; f.vy = -5 * KS; f.sub = 40; });
+    gasp = 110; say(w ? HN : SK, w ? 'N-Naruto-kun!!' : 'Sasuke-kun!!');
+  }
+  function contact(f, o) { if (o.mode === 'dash') clash(f, o); else hit(o, f); }
+  function dash(f, o) {
+    f.face = sgn(o.x - f.x); f.mode = 'dash'; f.mt = 24; f.vy = -2 * KS; puff(f.x, f.y - 4 * U, 5);
+    if (!o.cd && o.mode !== 'hurt' && o.mode !== 'dash' && Math.random() < 0.35) { o.face = -f.face; o.mode = 'dash'; o.mt = 24; o.vy = -2 * KS; }   // serangan balik
+  }
+  function ranged(f, o) {
+    f.face = sgn(o.x - f.x); f.vx = 0; f.cd = 85;
+    f.kind = (f.id === 'n' ? (!CL.length && Math.random() < 0.45) : Math.random() < 0.5) ? 'jutsu' : 'sh';
+    f.mode = f.kind === 'sh' ? 'throw' : 'seal'; f.mt = f.kind === 'sh' ? 18 : 26;
+  }
+  function shoot(f, o) {
+    var x = f.x + f.face * 12 * U, y = f.y - 16 * U, a = Math.atan2(o.y - 14 * U - y, o.x - x), n = f.id === 'n' ? 2 : 1;
+    for (var k = 0, b; k < n; k++) { b = a + (n > 1 ? (k - 0.5) * 0.2 : 0); PJ.push({ k: 'sh', own: f, x: x, y: y, vx: Math.cos(b) * 5.2 * KS, vy: Math.sin(b) * 5.2 * KS, life: 120 }); }
+  }
+  function cast(f, o) {
+    if (f.id === 'n') {       // Kage Bunshin no Jutsu
+      for (var k = 0, cx; k < 2; k++) {
+        cx = f.x + (k ? -1 : 1) * 14 * KS;
+        CL.push({ id: 'n', t: o, x: cx, y: f.y, face: f.face, vx: 0, vy: 0, mode: 'run', mt: 0, ph: rnd(0, 6), air: false, life: 100, hx: 0, hy: 0 });
+        puff(cx, f.y - 12 * U, 8);
+      }
+    } else {                  // Katon: Goukakyuu no Jutsu
+      var x = f.x + f.face * 12 * U, y = f.y - 16 * U, a = Math.atan2(o.y - 14 * U - y, o.x - x);
+      PJ.push({ k: 'fire', own: f, x: x, y: y, vx: Math.cos(a) * 3.6 * KS, vy: Math.sin(a) * 3.6 * KS, r: 3, life: 150 });
+    }
+  }
+  function update(f, o, ch) {   // ch = true: sedang mengejar, false: sedang dikejar
+    var D = Math.abs(o.x - f.x), dir = sgn(o.x - f.x), sp = (ch ? 2.7 : 2.3) * KS, i, p;
+    f.cd = Math.max(0, f.cd - 1); f.sub = Math.max(0, f.sub - 1); f.mt = Math.max(0, f.mt - 1);
+    if (f.mode === 'dash') {
+      f.vx = f.face * 7.5 * KS; f.vy = Math.max(-4 * KS, Math.min(4 * KS, (o.y - f.y) * 0.12));
+      if (!f.mt) { f.mode = 'idle'; f.vx *= 0.3; f.cd = 100; }
+      else if (D < 9 * U && Math.abs(o.y - f.y) < 16 * U) { f.mt = 0; f.mode = 'idle'; f.vx *= 0.2; f.cd = 100; contact(f, o); }
+    } else {
+      f.vy += 0.34 * KS;
+      if (f.mode === 'hurt') { f.vx *= 0.93; if (!f.mt) f.mode = 'idle'; }
+      else if (f.mode === 'throw' || f.mode === 'seal') {
+        f.vx *= 0.8;
+        if (f.mt === 10) { if (f.mode === 'throw') shoot(f, o); else cast(f, o); }
+        if (!f.mt) f.mode = 'idle';
+      } else {
+        if (!f.air) f.face = ch ? dir : -dir;
+        f.vx += ((ch && D < 36 * KS ? 0 : f.face * sp) - f.vx) * (f.air ? 0.04 : 0.25);
+        f.mode = Math.abs(f.vx) > 0.5 ? 'run' : 'idle';
+        if (!f.air) {
+          if (ch && (Math.random() < 0.012 || (o.air && D < 170 * KS && Math.random() < 0.04))) jump(f, 8.6);
+          if (!ch && ((f.x < 70 * KS && dir > 0) || (f.x > W - 70 * KS && dir < 0))) { jump(f, 9.6); f.vx = dir * 5.6 * KS; f.face = dir; }   // terpojok: lompat melewati pengejar
+          if (!ch) for (i = 0; i < PJ.length; i++) { p = PJ[i]; if (p.own !== f && Math.abs(p.x - f.x) < 130 * KS && (p.vx > 0) === (f.x > p.x) && Math.random() < 0.08) { jump(f, 9); break; } }
+        }
+        if (!f.cd) {
+          if (ch) { if (D > 210 * KS) { if (Math.random() < 0.025) ranged(f, o); } else if (Math.random() < 0.06) dash(f, o); }
+          else if (D > 130 * KS && Math.random() < 0.012) ranged(f, o);   // menyerang balik sambil kabur
         }
       }
-      if (f.cooldown === 0 && Math.random() < 0.02) { f.state = 'cast'; f.cooldown = 50; castJutsu(f); }
-      if (f.onGround && Math.random() < 0.01) { f.vy = -6.5; f.onGround = false; }
-      f.vy += 0.32; f.x += f.vx; f.y += f.vy;
-      if (f.y >= groundY) { f.y = groundY; f.vy = 0; f.onGround = true; }
-      f.x = Math.max(30, Math.min(fightW - 30, f.x));
-      if (f.hp < 100) f.hp += 0.08;
-    });
-
-    // ---- Proyektil jurus ----
-    for (var i = projectiles.length - 1; i >= 0; i--) {
-      var pr = projectiles[i]; pr.x += pr.vx; pr.life--;
-      for (var t = 0; t < 2; t++) particles.push({ x: pr.x + (Math.random() - 0.5) * 6, y: pr.y + (Math.random() - 0.5) * 6, vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8, life: 12, color: pr.color, size: 2 });
-      var tgt = pr.owner === N ? S : N;
-      if (Math.abs(pr.x - tgt.x) < 18 && Math.abs(pr.y - (tgt.y - 30)) < 30) {
-        tgt.hp = Math.max(0, tgt.hp - 15); tgt.hitFlash = 12; tgt.vx = pr.vx * 0.8;
-        burst(pr.x, pr.y, pr.color, 18); hitTexts.push({ x: tgt.x, y: tgt.y - 75, life: 45 }); projectiles.splice(i, 1); continue;
+    }
+    f.x = Math.max(26, Math.min(W - 26, f.x + f.vx)); f.y += f.vy;
+    if (f.y >= GY) { f.y = GY; f.vy = 0; }
+    f.air = f.y < GY - 1;
+  }
+  function logic() {
+    var fl = chaser === N ? S : N, i, j, p, c, tg, big;
+    if (--roleT <= 0) { chaser = fl; fl = chaser === N ? S : N; roleT = Math.round(rnd(320, 520)); }
+    update(chaser, fl, true); update(fl, chaser, false);
+    [N, S].forEach(function (f) { if (f.mode === 'run' && !f.air && T % 7 === 0) FX.push({ k: 'p', x: f.x - f.face * 10, y: GY - 2, vx: -f.face * 0.7, vy: -0.4, life: 0, max: 16, c: '#d9d2e9', s: U, g: 0 }); });
+    for (i = CL.length - 1; i >= 0; i--) {   // kloning Naruto menyerbu Sasuke
+      c = CL[i]; c.life--; c.face = sgn(c.t.x - c.x); c.x += c.face * 3.8 * KS; c.vy += 0.34 * KS; c.y = Math.min(GY, c.y + c.vy);
+      if (c.y >= GY) c.vy = 0; c.air = c.y < GY - 1;
+      if (c.life <= 0 || Math.abs(c.t.x - c.x) < 8 * U) {
+        puff(c.x, c.y - 12 * U, 10);
+        if (c.life > 0) { spark(c.t.x, c.t.y - 14 * U, '#ffe066', 8); if (c.t.mode === 'idle' || c.t.mode === 'run') { c.t.mode = 'hurt'; c.t.mt = 16; c.t.vx = c.face * 3 * KS; } }
+        CL.splice(i, 1);
       }
-      if (pr.life <= 0 || pr.x < -10 || pr.x > fightW + 10) { burst(pr.x, pr.y, pr.color, 10); projectiles.splice(i, 1); continue; }
-      fctx.fillStyle = pr.color; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r, 0, Math.PI * 2); fctx.fill();
-      fctx.fillStyle = 'rgba(255,255,255,0.9)'; fctx.beginPath(); fctx.arc(pr.x, pr.y, pr.r * 0.45, 0, Math.PI * 2); fctx.fill();
     }
-    // ---- Partikel ----
-    for (var j = particles.length - 1; j >= 0; j--) {
-      var pt = particles[j]; pt.x += pt.vx; pt.y += pt.vy; pt.vy += 0.08; pt.life--;
-      if (pt.life <= 0) { particles.splice(j, 1); continue; }
-      fctx.globalAlpha = Math.min(1, pt.life / 20); fctx.fillStyle = pt.color; fctx.fillRect(pt.x, pt.y, pt.size, pt.size); fctx.globalAlpha = 1;
+    for (i = PJ.length - 1; i >= 0; i--) {   // shuriken & bola api
+      p = PJ[i]; p.x += p.vx; p.y += p.vy; p.life--; tg = p.own === N ? S : N; big = p.k === 'fire';
+      if (big) { p.r = Math.min(7, p.r + 0.2); FX.push({ k: 'p', x: p.x - p.vx * 2 + rnd(-5, 5), y: p.y + rnd(-5, 5), vx: -p.vx * 0.2, vy: rnd(-0.8, 0), life: 0, max: 14, c: Math.random() < 0.5 ? '#ff7a1a' : '#ffd24a', s: U, g: 0 }); }
+      if (tg.mode !== 'hurt' && Math.abs(p.x - tg.x) < (big ? 11 : 7) * U && Math.abs(p.y - (tg.y - 14 * U)) < (big ? 16 : 13) * U) {
+        if (big) { ring(p.x, p.y, '#ffb347'); spark(p.x, p.y, '#ff7a1a', 16); spark(p.x, p.y, '#ffe27a', 10); }
+        hit(tg, p.own); PJ.splice(i, 1); continue;
+      }
+      if (p.own === S) for (j = CL.length - 1; j >= 0; j--) if (Math.abs(p.x - CL[j].x) < 8 * U && Math.abs(p.y - (CL[j].y - 14 * U)) < 14 * U) { puff(CL[j].x, CL[j].y - 12 * U, 10); CL.splice(j, 1); if (!big) p.life = 0; }
+      if (p.life <= 0 || p.x < -30 || p.x > W + 30 || p.y > GY + 6 || p.y < -30) { if (big) puff(p.x, p.y, 8); PJ.splice(i, 1); }
     }
-    // ---- Teks HIT ----
-    for (var k = hitTexts.length - 1; k >= 0; k--) {
-      var ht = hitTexts[k]; ht.y -= 0.7; ht.life--;
-      if (ht.life <= 0) { hitTexts.splice(k, 1); continue; }
-      fctx.globalAlpha = Math.min(1, ht.life / 35); fctx.fillStyle = '#ef4444'; fctx.font = 'bold 13px Poppins'; fctx.textAlign = 'center';
-      fctx.fillText('HIT!', ht.x, ht.y); fctx.globalAlpha = 1;
-    }
-    // ---- Gambar fighter ----
-    drawSprite(N.map, N.colors, N.x, N.y, U, N.facing, N.hitFlash > 0);
-    drawSprite(S.map, S.colors, S.x, S.y, U, S.facing, S.hitFlash > 0);
-    drawHpBar(N); drawHpBar(S);
-    fightRAF = requestAnimationFrame(fightTick);
+    if (T % 420 === 200) { c = Math.random() < 0.5 ? HN : SK; say(c, pick(LN[c.id])); }
+    for (i = BUB.length - 1; i >= 0; i--) if (--BUB[i].life <= 0) BUB.splice(i, 1);
   }
 
-  window.startFight = function () {
-    if (!fctx || fightRAF) return;
-    resizeFight();
-    S.x = Math.max(90, fightW - 70);
-    fightRAF = requestAnimationFrame(fightTick);
-  };
-  window.stopFight = function () { if (fightRAF) { cancelAnimationFrame(fightRAF); fightRAF = null; } };
-  window.addEventListener('resize', function () { if (fightRAF) resizeFight(); });
-  document.addEventListener('visibilitychange', function () { if (document.hidden) stopFight(); else if (currentPage === 7) startFight(); });
+  /* ---------- Render ---------- */
+  function render() {
+    var i, e, a, u0 = U, g = ctx.createLinearGradient(0, 0, 0, H);
+    ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H);
+    g.addColorStop(0, '#c7d2fe'); g.addColorStop(0.6, '#ddd6fe'); g.addColorStop(1, '#fbcfe8');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(99,102,241,0.25)'; ctx.fillRect(0, GY + 2, W, H - GY - 2);
+    ctx.fillStyle = '#818cf8'; ctx.fillRect(0, GY + 1, W, 2);
+    // penonton berdiri di tepi kanan judul, cemas
+    ctx.globalAlpha = 0.75; ctx.fillStyle = '#9a8c7e'; ctx.fillRect(W - 146, STY, 124, 4); ctx.fillStyle = '#74675b'; ctx.fillRect(W - 146, STY + 4, 124, 3);
+    U = 2;
+    [[HN, N], [SK, S]].forEach(function (q) {
+      var c = q[0]; c.face = sgn(q[1].x - c.x); drawChar(c, watchPose(c, q[1]), 0.8);
+      R(8, -26 + (((T % 48) / 12) | 0), 2, 3, '#8fd3ff');                            // keringat dingin
+      if (gasp > 0) { R(-1, -32, 2, 2, '#ef4444'); R(-1, -29, 2, 1, '#ef4444'); }  // tanda seru
+    });
+    U = u0;
+    for (i = FX.length - 1; i >= 0; i--) {
+      e = FX[i]; e.life++;
+      if (e.life > e.max) { FX.splice(i, 1); continue; }
+      a = 1 - e.life / e.max;
+      if (e.k === 'p') { e.x += e.vx; e.y += e.vy; e.vy += e.g; ctx.globalAlpha = a * 0.85; ctx.fillStyle = e.c; ctx.fillRect(Math.round(e.x), Math.round(e.y), e.s, e.s); }
+      else if (e.k === 'r') { e.r += e.vr; ctx.globalAlpha = a * 0.8; ctx.fillStyle = e.c; for (var q = 0; q < 30; q++) ctx.fillRect(Math.round(e.x + Math.cos(q * 0.2094) * e.r), Math.round(e.y + Math.sin(q * 0.2094) * e.r), U, U); }
+      else { e.vy += 0.3 * KS; e.y = Math.min(GY, e.y + e.vy); ctx.globalAlpha = Math.min(1, a * 3) * 0.85; drawLog(e.x, e.y); }
+    }
+    CL.forEach(function (c) { drawChar(c, poseOf(c, c.t), AL * 0.85); });
+    [N, S].forEach(function (f) {
+      var fo = f === N ? S : N, k, mx, my;
+      if (f.mode === 'dash') { ctx.globalAlpha = 0.5; ctx.fillStyle = '#ffffff'; for (k = 0; k < 3; k++) ctx.fillRect(Math.round(f.x - f.face * (14 + k * 7) * U - (f.face > 0 ? 9 * U : 0)), Math.round(f.y - (9 + k * 6) * U), 9 * U, 2); }
+      drawChar(f, poseOf(f, fo), AL);
+      if (f.mode === 'dash') { if (f.id === 'n') rasengan(f.hx, f.hy); else chidori(f.hx, f.hy); }
+      else if (f.mode === 'seal' && f.id === 's' && f.mt <= 10) { mx = f.x + f.face * 10 * U; my = f.y - 16 * U; ctx.globalAlpha = 0.85; disc(mx, my, 3, '#ff7a1a'); disc(mx, my, 1, '#ffe27a'); }
+    });
+    PJ.forEach(function (p) {
+      var r;
+      if (p.k === 'fire') { r = Math.round(p.r); ctx.globalAlpha = 0.85; disc(p.x, p.y, r, '#ff4d1a'); disc(p.x, p.y, Math.max(1, r - 2), '#ff9a1f'); disc(p.x, p.y, Math.max(1, r - 4), '#ffe27a'); }
+      else drawSh(p);
+    });
+    ctx.globalAlpha = 0.55; ctx.fillStyle = '#334155'; ctx.font = 'bold 9px Poppins, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Naruto', Math.round(N.x), Math.max(10, Math.round(N.y - 31 * U))); ctx.fillText('Sasuke', Math.round(S.x), Math.max(10, Math.round(S.y - 31 * U)));
+    BUB.forEach(function (b) {
+      ctx.font = 'bold 10px Poppins, sans-serif'; ctx.textAlign = 'left';
+      var w = Math.ceil(ctx.measureText(b.t).width) + 14, x = Math.max(4, Math.round(W - 152 - w)), y = Math.max(4, STY - 52);
+      ctx.globalAlpha = 0.9 * Math.min(1, b.life / 12);
+      ctx.fillStyle = '#334155'; ctx.fillRect(x - 1, y - 1, w + 2, 18); ctx.fillRect(x + w + 1, y + 6, 5, 3);
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(x, y, w, 16);
+      ctx.fillStyle = '#334155'; ctx.fillText(b.t, x + 7, y + 12);
+    });
+    ctx.globalAlpha = 1;
+  }
+  function tick() { T++; if (gasp > 0) gasp--; logic(); render(); raf = requestAnimationFrame(tick); }
 
-  updateIndicator(0);
+  /* ---------- Ukuran, start/stop ---------- */
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), sec = cv.parentNode, h2 = sec.querySelector('.page-title'), by = 66, sr, rg;
+    W = cv.offsetWidth || 600; H = cv.offsetHeight || 400; GY = H - 12; U = W > 700 ? 3 : 2; KS = U / 3;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (h2) { sr = sec.getBoundingClientRect(); rg = document.createRange(); rg.selectNodeContents(h2); by = (rg.getBoundingClientRect().bottom - sr.top) * (W / (sr.width || W)); }
+    STY = Math.round(Math.max(66, Math.min(by, 120)));   // penonton berdiri tepat di bawah baris judul "Kontak Saya"
+    if (HN) { HN.x = W - 118; SK.x = W - 66; HN.y = SK.y = STY; }
+  }
+  function init() {
+    FX = []; PJ = []; CL = []; BUB = []; gasp = 0; T = 0;
+    N = mk('n', W * 0.22, 1); S = mk('s', W * 0.72, -1); HN = mk('h', W - 118, -1); SK = mk('k', W - 66, -1); HN.y = SK.y = STY;
+    chaser = N; roleT = 380;
+  }
+  window.startFight = function () {
+    want = true;
+    if (raf || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    resize(); init(); raf = requestAnimationFrame(tick);
+    setTimeout(function () { if (raf) resize(); }, 900);   // ukur ulang setelah animasi pindah halaman selesai
+  };
+  window.stopFight = function () { want = false; if (raf) { cancelAnimationFrame(raf); raf = null; } };
+  window.addEventListener('resize', function () { if (raf) resize(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+    else if (want && !raf) raf = requestAnimationFrame(tick);
+  });
 })();
 </script>
 </body>
