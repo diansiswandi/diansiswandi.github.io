@@ -39,3 +39,4 @@ Website ini dibuat menggunakan kombinasi HTML, CSS, JavaScript dan Bootstrap 5. 
 - 3 card project (ganti placeholder placehold.co)
 - Form kontak (mailto)
 - Konsep buku digital (book-flip) dipertahankan
+- Animasi Naruto dan Sasuke di halaman `Kontak Saya`
